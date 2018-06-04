@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> <%= title %></title>
+</head>
+<body>
+
+</body>
+</html>
+	<!-- login -->
+	<center>
+		<h1> <%= title %> </h1>
+		<p> <%= data %> <p>
+		<form method="POST" action="/session" name="form1">
+			Usuario <input type="text" name="usr" required /><br><br>
+			Contraseña <input type="password" name="psw" required /><br><br>
+			<input type="submit" value="Log in" />
+			
+		</form>
+	</center>
+
+	
+<%- include layouts/footer.ejs %>

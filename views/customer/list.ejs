@@ -1,0 +1,138 @@
+<!--
+Este archivo carga la lista de todos los clientes de dicho vendedor
+-->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %> 
+
+<% if (sellerfullname) { %>
+<p align="right"> 
+    Hola <%= sellerfullname %><br>
+    <a href="/"><input type="button" value="Cerrar sesión" /></a>
+    </p>
+<% } %>
+<button id="nuevo"> Agregar nuevo cliente </button>
+
+<h3> Catálogo de clientes </h3>
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
+
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
+<form method="post" action="">
+    <input type="text" name="n" placeholder="Nombre del cliente" />
+    <input type="button" name="buscar" value="Buscar" />
+</form>
+
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <iframe src="/customers/add/<%= idseller %>" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var agregar = document.getElementById("nuevo");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+agregar.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+<table width='80%' border=0>
+    <tr style='text-align:left; background-color:#CCC'>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Dirección</th>
+    </tr>
+    
+<% if (data) { %>
+    <% data.forEach(function(customer){ %>
+        <tr>
+            <td><%= customer.name + " " + customer.lastname%></td>
+            <td><%= customer.phone %></td>
+            <td><%= customer.address %></td>
+            <td> 
+                <div style="float:left">
+                    <a href="/customers/edit/<%= customer.id_customer %>/<%=customer.id_seller%>">Edit</a> &nbsp;
+
+                    <form method="post" action="/customers/delete/<%= customer.id_customer %>/<%= customer.idseller %>" style="float:right">
+                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
+                        <input type="hidden" name="_method" value="DELETE" />
+                    </form>
+                </div>
+            </td>
+        </tr>
+    <% }) %>
+    <% } %>
+ 
+</table>
+ 

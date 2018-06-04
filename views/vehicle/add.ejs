@@ -1,0 +1,45 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>    
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+<form action="/vehicles/add" method="post" name="form1">
+    <table width="25%" border="0">
+        <tr> 
+            <td>Name</td>
+            <td><input type="text" name="name" id="name" value="<%= name %>" /></td>
+        </tr>
+        <tr> 
+            <td>Details</td>
+            <td><input type="text" name="details" value="<%= details %>" /></td>
+        </tr>
+        <tr> 
+            <td>Model</td>
+            <td><input type="text" name="model" value="<%= model %>" /></td>
+        </tr>
+        <tr> 
+            <td>Model Details</td>
+            <td><input type="text" name="model_details" value="<%= model_details %>" /></td>
+        </tr>
+        <tr> 
+            <td>Cost</td>
+            <td><input type="text" name="cost" value="<%= cost %>" /></td>
+        </tr>
+        <tr> 
+            <td><input type="submit" name="Submit" value="Agregar" /></td>
+        </tr>
+    </table>
+</form>
+ 
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

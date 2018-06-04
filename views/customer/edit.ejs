@@ -1,0 +1,78 @@
+<%- include ../layouts/header.ejs %>
+
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ <center>
+<h3> Datos del cliente</h3>
+
+<form action="/customers/edit/<%= id_customer %>/<%=id_seller%>" method="POST" name="form1">
+    <table width="35%" border="0" >
+        <tr> 
+            <td>Nombre</td>
+            <td><input type="text" name="name" id="name" value="<%= name%>" /></td>
+            <td><input type="text" name="name" id="name" value="<%=lastname%>" /></td>
+        </tr>
+        
+        <tr> 
+            <td>Teléfono</td>
+            <td><input type="text" name="phone" value="<%= phone %>" /></td>
+        </tr>
+        <tr> 
+            <td>Dirección</td>
+            <td><input type="text" name="address" value="<%= address %>" /></td>
+        </tr>
+        <tr> 
+            <td>Código postal</td>
+            <td><input type="text" name="postal_code" value="<%= postal_code %>" /></td>
+        </tr>
+        <tr> 
+            <td>Ciudad</td>
+            <td><input type="text" name="city" value="<%= city %>" /></td>
+        </tr>
+        <tr> 
+            <td>Estado</td>
+            <td><input type="text" name="state" value="<%= state %>" /></td>
+        </tr>
+        
+        <tr> 
+            <td>País</td>
+            <td><input type="text" name="country" value="<%= country %>" /></td>
+        </tr>
+        <tr> 
+            <td colspan="3" align="center"><input type="submit" name="Submit" value="Guardar" /></td>
+        </tr>
+    </table>
+    
+
+<h3> Pedidos </h3>
+    <table width="80%" border="0" >
+
+        <tr style='text-align:left; background-color:#CCC; font-weight: bold;'> 
+            <td>Vehículo</td>
+            <td>Fecha</td>
+             <td>Depósito</td>
+             <td>Restante </td>
+             <td>Estado de orden</td>
+             <td>Comentarios</td>
+        </tr>
+        <% if (data) { %>
+        <% data.forEach(function(order){ %>
+        <tr> 
+            <td> <%= order.model %> </td>
+            <td> <%= order.date_at %></td>
+            <td> <%= order.deposit %> </td>
+            <td> <%= order.rest_amount %> </td>
+            <td> <%= order.payment_status %> </td>
+            <td> <%= order.coments %> </td>
+        </tr>
+        <% }) %>
+        <% } %>
+    </table>
+<input type="hidden" name="_method" value="PUT" />
+</form>
+<%- include ../layouts/footer.ejs %>

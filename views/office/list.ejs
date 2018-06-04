@@ -1,0 +1,57 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+ 
+<table width='80%' border=0>
+ 
+    <tr style='text-align:left; background-color:#CCC'>
+        <th>Office name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Postal Code</th>
+        <th>Country</th>
+        <th>Office manager</th>
+    </tr>
+    
+    <% if (data) { %>
+    <% data.forEach(function(office){ %>
+        <tr>
+            <td><%= office.name_office %></td>
+            <td><%= office.phone %></td>
+            <td><%= office.address %></td>
+            <td><%= office.city %></td>
+            <td><%= office.state %></td>
+            <td><%= office.postal_code %></td>
+            <td><%= office.country %></td>
+            <td><%= office.id_office_manager %></td>
+            <td>
+                <div style="float:left">
+                    <a href="/offices/edit/<%= office.id_office %>">Edit</a> &nbsp;
+
+                    <form method="post" action="/office/delete/<%= office.id_office %>" style="float:right">
+                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
+                        <input type="hidden" name="_method" value="DELETE" />
+                    </form>
+                </div>
+            </td>
+        </tr>
+    <% }) %>
+    <% } %>
+ 
+</table>
+ 
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

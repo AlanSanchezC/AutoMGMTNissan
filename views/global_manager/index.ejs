@@ -1,0 +1,19 @@
+<%- include ../layouts/header.ejs %>
+
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+<% if (globalmanfullname) { %>
+<p align="right"> 
+    Hola <%= globalmanfullname %><br>
+    <a href="/"><input type="button" value="Cerrar sesión" /></a>
+    </p>
+<% } %>
+
+
+
+<form action="offices/<%= id_global_manager %>" method="get">
+	<input type="submit" value="Oficinas" />
+</form>
+
+
+<%- include ../layouts/footer.ejs%>

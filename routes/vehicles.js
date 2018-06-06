@@ -6,25 +6,30 @@ var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
 
-// SHOW LIST 
-router.get('/', function(req, res, next) {
+// SHOW LIST FROM OFFICE
+router.get('/(:id_office_manager)', function(req, res, next) {
     req.getConnection(function(error, conn) {
-        
-        conn.query("SELECT vehicles.name, vehicles.details, vehicles_models.model as model, vehicles_models.details as model_details, vehicles_models.cost " + 
-                    "FROM vehicles INNER JOIN vehicles_models " + 
-                    "ON vehicles.id_vehicle = vehicles_models.id_vehicle_model", function(err, rows, fields) {
-
+        conn.query("SELECT offices_managers.id_office_manager, " +
+                        "offices.id_office, offices.id_office_manager, "+
+                        "stocks.id_vehicle, stocks.id_office, " +
+                        "vehicles.*, vehicles_status.*, vehicles_models.*" +
+                        "count(*) as cantidad"+
+                    "FROM offices_managers" +
+                    "INNER JOIN offices ON offices_managers.id_office_manager = offices.id_office_manager " +
+                    "INNER JOIN stocks ON offices.id_office = stocks.id_office " +
+                    "INNER JOIN vehicles ON stocks.id_vehicle = vehicles.id_vehicle "+
+                    "INNER JOIN vehicles_status ON vehicles.id_vehicle_status = vehicles_status.id_vehicle_status " +
+                    "INNER JOIN vehicles_models ON vehicles.id_vehicle_model = vehicles_models.id_vehicle_model "+
+                    "WHERE offices_managers.id_office_manager = " + req.params.id_office_manager + ";", function(err, rows, fields) {
             if (err) {
                 req.flash('error', err)
                 res.render('vehicle/list', {
                     title: 'Vehicle List', 
-                    data: ''
+                    stock: ''
                 })
             } else {
-                res.render('vehicle/list', {
-                    title: 'Vehicle List', 
-                    data: rows
-                })
+                console.log(JSON.stringify(rows))
+                res.redirect('/session')
             }
         })
     })

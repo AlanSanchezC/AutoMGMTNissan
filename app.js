@@ -29,6 +29,7 @@ var dbOptions = {
  */ 
 app.use(myConnection(mysql, dbOptions, 'pool'));
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(__dirname + '/public'));
 /**
  * setting up the templating view engine
  */ 
@@ -46,6 +47,7 @@ var vehicles = require('./routes/vehicles')
 var offices = require('./routes/offices')
 var offices_managers = require('./routes/offices_managers')
 var global_managers = require('./routes/globals_managers')
+var orders = require('./routes/orders')
 
 /**
  * Express Validator Middleware for Form Validation
@@ -119,6 +121,8 @@ app.use('/vehicles', vehicles)
 app.use('/offices', offices)
 app.use('/offices_managers', offices_managers)
 app.use('/globals_managers', global_managers)
+app.use('/orders', orders)
+
 
 app.listen(3000, function(){
     console.log('Server running at port 3000: http://127.0.0.1:3000')

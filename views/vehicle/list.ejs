@@ -1,8 +1,3 @@
-<!--
-including header content which is common for all pages
--->
-<%- include ../layouts/header.ejs %>
- 
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -10,42 +5,44 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
- 
+
+<h3> Catálogo de vehículos </h3>
+
+Consultar en
+<select>
+    <option> Estado</option>
+</select>
+
+<select>
+    <option> Municipio</option>
+</select>
+
+<select>
+    <option> Sucursal</option>
+</select>
+
+<br><br>
 <table width='80%' border=0>
- 
     <tr style='text-align:left; background-color:#CCC'>
-        <th>Name</th>
-        <th>Details</th>
-        <th>Model</th>
-        <th>Model details</th>
-        <th>Cost</th>
+        <th>Cantidad</th>
+        <th>Nombre</th>
+        <th>Detalles</th>
+        <th>Estado</th>
+        <th>Costo</th>
     </tr>
 
-    <% if (data) { %>
-    <% data.forEach(function(vehicle){ %>
+    <% if (stock) { %>
+    <% stock.forEach(function(vehicle){ %>
         <tr>
-            <td><%= vehicle.name %></td>
-            <td><%= vehicle.details%></td>
+            <td><%= vehicle.cantidad %></td>
             <td><%= vehicle.model %></td>
-            <td><%= vehicle.model_details %></td>
+            <td><%= vehicle.details%></td>
+            <td><%= vehicle.status %></td>
             <td><%= vehicle.cost %></td>
-             <td>
-                <div style="float:left">
-                    <a href="/vehicles/edit/<%= vehicle.id_vehicle %>">Edit</a> &nbsp;
-
-                    <form method="post" action="/vehicle/delete/<%= vehicle.id_vehicle %>" style="float:right">
-                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
-                        <input type="hidden" name="_method" value="DELETE" />
-                    </form>
-                </div>
-            </td>
+            
+             
         </tr>
     <% }) %>
     <% } %>
  
 </table>
- 
-<!--
-including footer content which is common for all pages
--->
-<%- include ../layouts/footer.ejs %>

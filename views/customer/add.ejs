@@ -1,7 +1,7 @@
 <!--
 including header content which is common for all pages
 -->   
- 
+ <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -9,9 +9,10 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>
- 
+<center>
+<h2> Ingrese los datos del cliente </h2><br>
 <form action="/customers/add/<%= id_seller %>" method="post" name="form1">
-    <table width="25%" border="0">
+    <table width="70%" border="0">
         <tr> 
             <td>Name</td>
             <td><input type="text" name="name" id="name" value="<%= name %>" /></td>
@@ -46,7 +47,7 @@ including header content which is common for all pages
             <td><input type="text" name="country" value="<%= country %>" /></td>
         </tr>
         <tr> 
-            <td><input type="submit" name="Submit" value="Agregar" /></td>
+            <td colspan="2" align="center"><input type="submit" name="Submit" value="Agregar" /></td>
         </tr>
     </table>
 </form>

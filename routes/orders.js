@@ -1,27 +1,38 @@
 var express = require('express')
 var router = express.Router();
+const TITLE = "AutoMGMT Nissan®";
 //var app = express()
  
 var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
 // SHOW LIST 
-router.get('/(:id_seller)/(:id_customer)', function(req, res, next) {
+router.get('/(:id_customer)', function(req, res, next) {
     req.getConnection(function(error, conn) {
-        conn.query("SELECT orders.id_order as idOrden, orders.*, orders_details.id_order as idDeposito, orders_details.*, orders_type.*"+
-                    "FROM orders, orders_details, orders_type " + 
-                    "WHERE orders_details.id_seller = ? AND orders_details.id_customer = ?", req.params.id_seller, req.params.id_customer ,function(err, rows, fields) {
+        conn.query("SELECT orders_details.*, orders.*, orders_types.*, payments.*, payments_status.*, payments_status.details as det,vehicles.*, vehicles_models.*, customers.id_customer " +
+                   "FROM orders_details " +
+                    "INNER JOIN orders ON orders.id_order = orders_details.id_order " +
+                    "INNER JOIN orders_types ON orders_details.id_order_type = orders_types.id_order_type "+
+                    "INNER JOIN payments ON orders.id_order = payments.id_order "+
+                    "INNER JOIN payments_status ON payments.id_payment_status = payments_status.id_payment_status " +
+                    "INNER JOIN vehicles ON orders_details.id_vehicle = vehicles.id_vehicle " +
+                    "INNER JOIN vehicles_models ON vehicles.id_vehicle_model = vehicles_models.id_vehicle_model " +
+                    "INNER JOIN customers ON orders_details.id_customer = customers.id_customer " +
+                    "WHERE orders_details.id_customer = "+ req.params.id_customer +" "+
+                    "ORDER BY vehicles_models.model;",function(err, rows, fields) {
             //if(err) throw err
-            if (err) {
+            if (err || rows.length === 0) {
                 req.flash('error', err)
                 res.render('order/list', {
-                    title: 'Order list', 
-                    data: ''
+                    title: 'Lista de órdenes', 
+                    data: '',
+                    comments: '',
                 })
             } else {
                 res.render('order/list', {
-                    title: 'Order list', 
-                    data: rows
+                    title: 'Lista de órdenes', 
+                    data: rows,
+                    comments: rows[0].coments
                 })
             }
         })

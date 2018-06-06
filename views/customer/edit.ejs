@@ -1,4 +1,5 @@
-<%- include ../layouts/header.ejs %>
+
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
 
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
@@ -8,14 +9,19 @@
     <p style="color:green"><%- messages.success %></p>
 <% } %>
  <center>
-<h3> Datos del cliente</h3>
+<form method="post" action="/customers/delete/<%= id_customer %>" style="float:right">
+    <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
+    <input type="hidden" name="_method" value="DELETE" />
+</form><br>
 
-<form action="/customers/edit/<%= id_customer %>/<%=id_seller%>" method="POST" name="form1">
+<h2> Datos del cliente</h2>
+
+<form action="/customers/edit/<%= id_customer %>" method="POST" name="form1">
     <table width="35%" border="0" >
         <tr> 
             <td>Nombre</td>
             <td><input type="text" name="name" id="name" value="<%= name%>" /></td>
-            <td><input type="text" name="name" id="name" value="<%=lastname%>" /></td>
+            <td><input type="text" name="lastname" id="lastname" value="<%= lastname%>" /></td>
         </tr>
         
         <tr> 
@@ -47,32 +53,6 @@
             <td colspan="3" align="center"><input type="submit" name="Submit" value="Guardar" /></td>
         </tr>
     </table>
-    
-
-<h3> Pedidos </h3>
-    <table width="80%" border="0" >
-
-        <tr style='text-align:left; background-color:#CCC; font-weight: bold;'> 
-            <td>Vehículo</td>
-            <td>Fecha</td>
-             <td>Depósito</td>
-             <td>Restante </td>
-             <td>Estado de orden</td>
-             <td>Comentarios</td>
-        </tr>
-        <% if (data) { %>
-        <% data.forEach(function(order){ %>
-        <tr> 
-            <td> <%= order.model %> </td>
-            <td> <%= order.date_at %></td>
-            <td> <%= order.deposit %> </td>
-            <td> <%= order.rest_amount %> </td>
-            <td> <%= order.payment_status %> </td>
-            <td> <%= order.coments %> </td>
-        </tr>
-        <% }) %>
-        <% } %>
-    </table>
+    <br>
 <input type="hidden" name="_method" value="PUT" />
 </form>
-<%- include ../layouts/footer.ejs %>

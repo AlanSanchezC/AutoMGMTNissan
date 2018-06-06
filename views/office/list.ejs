@@ -1,8 +1,9 @@
 <!--
 including header content which is common for all pages
 -->
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <%- include ../layouts/header.ejs %>
- 
+
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -10,6 +11,17 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
+
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="/customers/add/<%= id_seller %>" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+
+<button id="nuevo"> Agregar cliente</button>
  
 <table width='80%' border=0>
  

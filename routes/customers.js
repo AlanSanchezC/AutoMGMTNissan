@@ -160,6 +160,7 @@ router.get('/edit/(:id_customer)', function(req, res, next){
                 res.redirect('/customer')
             }
             else { // if user found
+                console.log("SI")
                 res.render("customer/edit", {
                     title: TITLE, 
                     id_customer: rows[0].id_customer,
@@ -177,7 +178,7 @@ router.get('/edit/(:id_customer)', function(req, res, next){
         })
     })
 })
-
+/*
 // SHOW EDIT USER FORM
 router.get('/edit/(:id_customer)/(:id_seller)', function(req, res, next){
     req.getConnection(function(error, conn) {
@@ -194,23 +195,26 @@ router.get('/edit/(:id_customer)/(:id_seller)', function(req, res, next){
             //if(err) throw err
             
             if (err || rows.length === 0) {
-                conn.query('SELECT * FROM customers WHERE id_customer = ' + req.params.id_customer, function(err, rows, fields) {
+                conn.query('SELECT * FROM customers WHERE id_customer = ' + req.params.id_customer, function(err, rows2, fields) {
                     res.render("customer/edit", {
                         title: TITLE, 
-                        id_customer: rows[0].id_customer,
-                        name: rows[0].name,
-                        lastname: rows[0].lastname,
-                        phone: rows[0].phone,
-                        address: rows[0].address,
-                        city: rows[0].city,
-                        state: rows[0].state,
-                        postal_code: rows[0].postal_code,
-                        country: rows[0].country,
-                        id_seller: rows[0].id_seller,
+                        id_customer: rows2[0].id_customer,
+                        name: rows2[0].name,
+                        lastname: rows2[0].lastname,
+                        phone: rows2[0].phone,
+                        address: rows2[0].address,
+                        city: rows2[0].city,
+                        state: rows2[0].state,
+                        postal_code: rows2[0].postal_code,
+                        country: rows2[0].country,
+                        id_seller: rows2[0].id_seller,
                         data: ''
                     })
                 })
             } else {
+                var cookie;
+                res.cookie('pedidos', rows)
+                console.log(res.cookie)
                 res.render("customer/edit", {
                     title: TITLE,
                     id_customer: req.params.id_customer,
@@ -225,10 +229,11 @@ router.get('/edit/(:id_customer)/(:id_seller)', function(req, res, next){
                     country: rows[0].country,
                     data: rows
                 })
+
             }
         })
     })
-})
+}) */
  
 // EDIT USER POST ACTION
 router.put('/edit/(:id_customer)', function(req, res, next) {
@@ -240,21 +245,11 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
     req.assert('state', 'A valid state is required').notEmpty()   //Validate state
     req.assert('postal_code', 'A valid postal_code is required').notEmpty()   //Validate
     req.assert('country', 'A valid country is required').notEmpty()   //Validate
-    req.assert('id_seller', 'A valid id_seller is required').notEmpty()   //Validate
-
+    
     var errors = req.validationErrors()
     
     if( !errors ) {   //No errors were found.  Passed Validation!
         
-        /********************************************
-         * Express-validator module
-         
-        req.body.comment = 'a <span>comment</span>';
-        req.body.username = '   a user    ';
- 
-        req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
-        req.sanitize('username').trim(); // returns 'a user'
-        ********************************************/
         var customer = {
             name: req.sanitize('name').escape().trim(),
             lastname: req.sanitize('lastname').escape().trim(),
@@ -263,19 +258,20 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
             city: req.sanitize('city').escape().trim(),
             state: req.sanitize('state').escape().trim(),
             postal_code: req.sanitize('postal_code').escape().trim(),
-            country: req.sanitize('country').escape().trim(),
-            id_seller: req.sanitize('id_seller').escape().trim()
+            country: req.sanitize('country').escape().trim()
         }
-        
         req.getConnection(function(error, conn) {
+            console.log("entra")
             conn.query('UPDATE customers SET ? WHERE id_customer = ' + req.params.id_customer, customer, function(err, result) {
                 //if(err) throw err
+
                 if (err) {
                     req.flash('error', err)
                     
                     // render to views/user/add.ejs
                     res.render('customer/edit', {
                         title: 'Edit customer',
+                        id_seller: req.params.id_seller,
                         name: req.body.name,
                         lastname: req.body.lastname,
                         phone: req.body.phone,
@@ -284,14 +280,14 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
                         state: req.body.state,
                         postal_code: req.body.postal_code,
                         country: req.body.country,
-                        id_seller: req.body.id_seller
+                        id_seller: req.body.id_seller   
                     })
                 } else {
                     req.flash('success', 'Data updated successfully!')
-                    
                     // render to views/customer/add.ejs
                     res.render('customer/edit', {
                         title: 'Edit customer',
+                        id_seller: req.params.id_seller,
                         id_customer: req.params.id_customer,
                         name: req.body.name,
                         lastname: req.body.lastname,
@@ -301,7 +297,8 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
                         state: req.body.state,
                         postal_code: req.body.postal_code,
                         country: req.body.country,
-                        id_seller: req.body.id_seller
+                        id_seller: req.body.id_seller,
+                        data: ''
                     })
                 }
             })
@@ -319,7 +316,8 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
          * because req.param('name') is deprecated
          */ 
         res.render('customer/edit', { 
-            title: 'Edit customer',            
+            title: 'Edit customer',  
+            id_seller: req.params.id_seller,          
             id_customer: req.params.id_customer, 
             name: req.body.name,
             lastname: req.body.lastname,
@@ -329,13 +327,14 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
             state: req.body.state,
             postal_code: req.body.postal_code,
             country: req.body.country,
-            id_seller: req.body.id_seller
+            id_seller: req.body.id_seller,
+            data: ''
         })
     }
 })
  
 // DELETE USER
-router.delete('/delete/(:id_customer)/(:idseller)', function(req, res, next) {
+router.delete('/delete/(:id_customer)', function(req, res, next) {
     var customer = { 
         id: req.params.id_customer,
         idseller: req.params.idseller
@@ -351,7 +350,7 @@ router.delete('/delete/(:id_customer)/(:idseller)', function(req, res, next) {
             } else {
                 req.flash('success', 'Cliente eliminado exitosamente!')
                 // redirect to customer list page
-                res.redirect('back') 
+                req.flash('back') 
             }
         })
     })

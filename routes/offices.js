@@ -6,9 +6,13 @@ var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
 // SHOW LIST 
-router.get('/', function(req, res, next) {
+router.get('/(:id_manager)', function(req, res, next) {    
     req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM offices ORDER BY id_office DESC',function(err, rows, fields) {
+        conn.query("SELECT offices.*, offices_managers.* " +
+                    "FROM offices "+
+                    "INNER JOIN offices_managers ON offices.id_office_manager = offices_managers.id_office_manager " +
+                    "WHERE id_global_manager = ?" +
+                    " ORDER BY offices.state DESC;", req.params.id_manager, function(err, rows, fields) {
             //if(err) throw err
             if (err) {
                 req.flash('error', err)

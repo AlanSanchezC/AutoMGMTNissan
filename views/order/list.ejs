@@ -1,56 +1,38 @@
-<!--
-including header content which is common for all pages
--->
 <%- include ../layouts/header.ejs %>
- 
-<% if (messages.error) { %>
-    <p style="color:red"><%- messages.error %></p>
-<% } %>
- 
-<% if (messages.success) { %>
-    <p style="color:green"><%- messages.success %></p>
-<% } %>    
- 
-<table width='80%' border=0>
- 
-    <tr style='text-align:left; background-color:#CCC'>
-        <th>Vehículo</th>
-        <th>Depósitos</th>
-        <th>Restante por pagar</th>
-        <th>Fecha</th>
-        <th>Comentarios</th>
-        <th>Estado</th>
-        <th></th>
+
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+<button> Nueva orden </button>
+
+<h3> Historial </h3>
+
+<% if (data) { %>
+
+<!-- Diferenciar múltliples id_order-->
+<table width="100%" border="0" >
+    <tr style='text-align:left; background-color:#CCC; font-weight: bold;'> 
+        <td>Vehículo</td>
+        <td>Fecha</td>
+        <td>A pagar</td>
+        <td>Depósitos</td>
+        <td>Restante </td>
+        <td>Estado de vehículo</td>
+    </tr>
+    <% data.forEach(function(order){ %>  
+    <tr> 
+        <td> <%= order.model %> </td>
+        <td> <%= order.date_at %></td>
+        <td> <%= order.amount %> </td>
+        <td> <%= order.deposit %> </td>
+        <td> <%= order.rest_amount %> </td>
+        <td> <%= order.payment_status %> </td>
     </tr>
 
-    <% if (data) { %>
-    <%= JSON.stringify(data) %>
-    <!--
-    <% data.forEach(function(order){ %>
-        <tr>
-            <td><%= order.vehiclename %></td>
-            <td><%= order.deposit%></td>
-            <td><%= order.debt %></td>
-            <td><%= order.date_at %></td>
-            <td><%= order.coments %></td>
-            <td><%= order.order_type %></td>
-             <td>
-                <div style="float:left">
-                    <a href="/orders/edit/<%= order.id_order %>">Edit</a> &nbsp;
-
-                    <form method="post" action="/order/delete/<%= order.id_order %>" style="float:right">
-                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
-                        <input type="hidden" name="_method" value="DELETE" />
-                    </form>
-                </div>
-            </td>
-        </tr>
-    <% }) %> -->
-    <% } %>
- 
+    <% }) %>
+    </table>
+    <% } else { %>
+        <h4> Sin ordenes </h4>
+    <% }%>
 </table>
- 
-<!--
-including footer content which is common for all pages
--->
+
 <%- include ../layouts/footer.ejs %>

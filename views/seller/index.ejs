@@ -1,7 +1,41 @@
 <!-- Esta es la pag principal de los vendedores, donde se verá todo lo que puedan hacer -->
 
 <%- include ../layouts/header.ejs %>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 
-<%- include ../customer/list.ejs %>
+<% if (sellerfullname) { %>
+<p align="right"> 
+    Hola <%= sellerfullname %><br>
+    <a href="/"><input type="button" value="Cerrar sesión" /></a>
+    </p>
+<% } %>
+
+<button id="cats" onclick="catalogos()"> Cat </button>
+
+<script>
+function catalogos() {
+    var clientes = document.getElementById("catalogoClientes");
+    var vehiculos = document.getElementById("catalogoVehiculos");
+
+    if (clientes.style.display === "none") {
+        clientes.style.display = "block";
+        vehiculos.style.display = "none";
+    } else {
+        clientes.style.display = "none";
+        vehiculos.style.display = "block";
+    }
+}
+
+</script>
+
+<div id="catalogoClientes" style="display:none;">
+  <%- include ../customer/list.ejs %>
+</div>
+<br>
+<div id="catalogoVehiculos" >
+  <%- include ../vehicle/list.ejs %>
+</div>
 
 <%- include ../layouts/footer.ejs %>

@@ -11,7 +11,7 @@ router.get('/(:id_manager)', function(req, res, next) {
         conn.query("SELECT offices.*, offices_managers.* " +
                     "FROM offices "+
                     "INNER JOIN offices_managers ON offices.id_office_manager = offices_managers.id_office_manager " +
-                    "WHERE id_global_manager = ?" +
+                    "WHERE offices.id_global_manager = ?" +
                     " ORDER BY offices.state DESC;", req.params.id_manager, function(err, rows, fields) {
             //if(err) throw err
             if (err) {
@@ -21,9 +21,11 @@ router.get('/(:id_manager)', function(req, res, next) {
                     data: ''
                 })
             } else {
+                console.log(rows)
                 res.render('office/list', {
-                    title: 'Office List', 
-                    data: rows
+                    title: 'Lista de sucursales', 
+                    data: rows,
+                    id_global_manager: req.params.id_manager
                 })
             }
         })
@@ -31,23 +33,32 @@ router.get('/(:id_manager)', function(req, res, next) {
 })
  
 // SHOW ADD FORM name
-router.get('/add', function(req, res, next){    
-    // render to views/office/add.ejs
-    res.render('office/add', {
-        title: 'Add New Office',
-        name_office: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        postal_code: '',
-        country: '',
-        id_office_manager: ''
+router.get('/add/(:id_global_manager)/(:state)', function(req, res, next){
+    req.getConnection(function(error, conn) {
+        conn.query("SELECT id_office_manager, name, lastname, city, state FROM offices_managers " +
+                        "WHERE job = 'S/A' AND state = ?", req.params.state ,function(err, rows, fields) {
+            if (rows.length === 0){
+                rows = ''
+            }
+            res.render('office/add', {
+                title: 'Add New Office',
+                name_office: '',
+                phone: '',
+                address: '',
+                city: '',
+                state: '',
+                postal_code: '',
+                country: '',
+                data: rows,
+                id_office_manager: rows[0].id_office_manager,
+                id_global_manager: req.params.id_global_manager
+            })
+        })
     })
 })
  
 // ADD NEW x POST ACTION
-router.post('/add', function(req, res, next){    
+router.post('/addnew/(:id_office_manager)/(:id_global_manager)', function(req, res, next){    
     req.assert('name_office', 'Office name is required').notEmpty()   //Validate 
     req.assert('phone', 'A valid phone is required').notEmpty()   //Validate
     req.assert('address', 'A valid address is required').notEmpty()   //Validate
@@ -55,8 +66,7 @@ router.post('/add', function(req, res, next){
     req.assert('state', 'A valid state is required').notEmpty()   //Validate state
     req.assert('postal_code', 'A valid postal code is required').notEmpty()   //Validate
     req.assert('country', 'A valid country is required').notEmpty()   //Validate
-    req.assert('id_office_manager', 'A valid id is required').notEmpty()   //Validate
- 
+    
     var errors = req.validationErrors()
     
     if( !errors ) {
@@ -69,41 +79,18 @@ router.post('/add', function(req, res, next){
             state: req.sanitize('state').escape().trim(),
             postal_code: req.sanitize('postal_code').escape().trim(),
             country: req.sanitize('country').escape().trim(),
-            id_office_manager: req.sanitize('id_office_manager').escape().trim()
+            id_office_manager: req.params.id_office_manager,
+            id_global_manager: req.params.id_global_manager
         }
-        
+        console.log(office)
         req.getConnection(function(error, conn) {
             conn.query('INSERT INTO offices SET ?', office, function(err, result) {
-                //if(err) throw err
-                if (err) {
-                    req.flash('error', err)
-                    
-                    res.render('office/add', {
-                        title: 'Add New Office',
-                        name_office: office.name_office,
-                        phone: office.phone,
-                        address: office.address,
-                        city: office.city,
-                        state: office.state,
-                        postal_code: office.postal_code,
-                        country: office.country,
-                        id_office_manager: office.id_office_manager
-                    })
-                } else {                
-                    req.flash('success', 'Data added successfully!')
-                    
-                    res.render('office/add', {
-                        title: 'Add New Office',
-                        name_office: '',
-                        phone: '',
-                        address: '',
-                        city: '',
-                        state: '',
-                        postal_code: '',
-                        country: '',
-                        id_office_manager: ''
-                    })
-                }
+                
+                console.log(result)
+                conn.query("UPDATE offices_managers SET job = 'Office Manager' WHERE id_office_manager = ?", office.id_office_manager, function(err, result) {
+                    res.render('office/success')
+                })
+            
             })
         })
     }

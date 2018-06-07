@@ -32,7 +32,7 @@ router.post('/session', function(req, res, next){
             							"sellers.id_seller as idseller, sellers.name as sellername, sellers.lastname as sellerlastname, sellers.id_user as usr, sellers.id_office_manager \n" + 
                                     "FROM sellers \n" + 
             						"INNER JOIN customers ON sellers.id_seller = customers.id_seller \n" +
-            						"WHERE sellers.id_user = '" + u +"';", function(err, rows, fields) {
+            						"WHERE sellers.id_user = ? ;", u, function(err, rows, fields) {
                             //Query para catálogo de vehiculos
                             conn.query("SELECT offices_managers.id_office_manager, " +
                                             "offices.id_office, offices.id_office_manager, "+
@@ -71,13 +71,62 @@ router.post('/session', function(req, res, next){
                             })
 		                })
             		break;
+                    case 'o':
+                        conn.query("SELECT offices_managers.* FROM offices_managers WHERE offices_managers.id_user = ?", u, function(err, rows, fields){
+                            conn.query("SELECT stocks.*, offices.id_office, vehicles.id_vehicle, vehicles.id_vehicle_model, vehicles_models.* " +
+                                        "FROM stocks " +
+                                        "INNER JOIN vehicles ON stocks.id_vehicle = vehicles.id_vehicle " +
+                                        "INNER JOIN vehicles_models ON vehicles.id_vehicle_model = vehicles_models.id_vehicle_model " +
+                                        "INNER JOIN offices ON stocks.id_office = offices.id_office "+
+                                        "WHERE stocks.id_office = 1 ;" ,function(err, rows2, fields) {
+                                if (err) {
+                                    req.flash('error', err)
+                                    res.render('stock/list', {
+                                        title: 'Customer List', 
+                                        data: ''
+                                    })
+                                } else {
+                                    console.log(rows)
+                                    res.render('office_manager/index', {
+                                        title: TITLE, 
+                                        data: rows2,
+                                        officemanfullname: rows[0].name + " " + rows[0].lastname,
+                                        id_office_manager: rows[0].id_office_manager
+                                    })
+                                }
+                            })
+                        })
+                    break;
                     case 'g':
-                        conn.query("SELECT globals_managers.* FROM globals_managers WHERE globals_managers.id_user = '" + u +"';", function (err, rows, fields){
-                            res.render('global_manager/index', {
-                                title: TITLE,
-                                data: rows,
-                                globalmanfullname: rows[0].name + " " + rows[0].lastname,
-                                id_global_manager: rows[0].id_global_manager
+                        conn.query("SELECT globals_managers.* FROM globals_managers WHERE globals_managers.id_user = ? ;", u , function (err, rows, fields){
+                            conn.query("SELECT offices.id_office, offices.name_office, offices.phone as Ophone, offices.address as Oaddress, offices.city as Ocity, offices.state as Ostate, offices.postal_code as Opc, offices_managers.* " +
+                                        "FROM offices "+
+                                        "INNER JOIN offices_managers ON offices.id_office_manager = offices_managers.id_office_manager " +
+                                        "WHERE offices.id_global_manager = ? " +
+                                        "ORDER BY offices.state DESC;", rows[0].id_global_manager, function(err, rows2, fields) {
+                                conn.query("SELECT stocks.*, offices.id_office, vehicles.id_vehicle, vehicles.id_vehicle_model, vehicles_models.*, sum(stocks.cantidad) as cantidadGlobal " +
+                                            "FROM stocks " +
+                                            "INNER JOIN vehicles ON stocks.id_vehicle = vehicles.id_vehicle " +
+                                            "INNER JOIN vehicles_models ON vehicles.id_vehicle_model = vehicles_models.id_vehicle_model " +
+                                            "INNER JOIN offices ON stocks.id_office = offices.id_office " + 
+                                            "WHERE offices.id_global_manager = ? GROUP BY vehicles_models.model;", rows[0].id_global_manager ,function (err, rows3, fields){
+                                    if(rows.length === 0){
+                                        res.render('',{
+                                            title: TITLE,
+                                            globalmanfullname: rows[0].name + " " + rows[0].lastname,
+                                            id_global_manager: rows[0].id_global_manager
+                                        })
+                                    } else {
+                                        res.render('global_manager/index', {
+                                            title: TITLE,
+                                            data: rows2,
+                                            stockGlobal: rows3,
+                                            globalmanfullname: rows[0].name + " " + rows[0].lastname,
+                                            id_global_manager: rows[0].id_global_manager,
+                                            state: rows2[0].Ostate
+                                        })
+                                    }
+                                })
                             })
                         })
                     break;

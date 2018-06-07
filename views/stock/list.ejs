@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+
+<div id="editarVehiculoStock" class="modal" >
+  <!-- Modal content -->
+  <div class="modal-content" style="width: 300px;">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="" id="frameEditarStock" width="250px;" height="200px;"></iframe>
+  </div>
+</div>
+
+<h3> Stock de vehículos </h3>
+
+<table width='80%' border=0>
+    <tr style='text-align:left; background-color:#CCC'>
+        <th>Cantidad</th>
+        <th>Nombre</th>
+        <th>Detalles</th>
+        <th>Costo</th>
+    </tr>
+
+    <% if (data) { %>
+    <% data.forEach(function(stock){ %>
+        <tr>
+            <td><%= stock.cantidad %></td>
+            <td><%= stock.model %></td>
+            <td><%= stock.details%></td>
+            <td><%= stock.cost %></td>
+            <td>
+                <div style="float:left">
+                    <button class="editStock" onclick="alerta(this)" id="editStock<%= stock.id_stock %>" value="<%= stock.id_stock %>" > Editar</button>
+                </div>
+            </td>
+        </tr>
+    <% }) %>
+    <% } %>
+ 
+</table>
+
+<script>
+// Get the modal
+var editarVehicStock = document.getElementById('editarVehiculoStock');
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+function cerrarDialogo(){
+    editarVehicStock.style.display = "none";
+}
+
+function alerta(vehiculoStock) {
+    var iframe = document.getElementById('frameEditarStock')
+    iframe.src = "/stocks/edit/" + vehiculoStock.value;
+    //alert(iframe.src)
+    editarVehicStock.style.display = "block"
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == editarVehicStock) {
+        editarVehicStock.style.display = "none";
+    }
+}
+</script>

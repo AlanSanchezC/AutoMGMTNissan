@@ -48,6 +48,7 @@ var offices = require('./routes/offices')
 var offices_managers = require('./routes/offices_managers')
 var global_managers = require('./routes/globals_managers')
 var orders = require('./routes/orders')
+var stock = require('./routes/stocks')
 
 /**
  * Express Validator Middleware for Form Validation
@@ -122,6 +123,7 @@ app.use('/offices', offices)
 app.use('/offices_managers', offices_managers)
 app.use('/globals_managers', global_managers)
 app.use('/orders', orders)
+app.use('/stocks', stock)
 
 
 app.listen(3000, function(){

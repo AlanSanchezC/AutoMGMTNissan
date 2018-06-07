@@ -1,5 +1,4 @@
-<%- include ../layouts/header.ejs %>    
-        
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -7,9 +6,11 @@
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>
+<center>
+<h3> Datos del gerente </h3>
  
 <form action="/offices_managers/edit/<%= id_office_manager %>" method="POST" name="form1">
-    <table width="25%" border="0">
+    <table width="50%" border="0">
         <tr> 
             <td>Name</td>
             <td><input type="text" name="name" id="name" value="<%= name %>" /></td>

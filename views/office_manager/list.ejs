@@ -2,7 +2,8 @@
 including header content which is common for all pages
 -->
 <%- include ../layouts/header.ejs %>
- 
+ <link rel="stylesheet" type="text/css" href="/css/style.css" />
+
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -10,36 +11,47 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
- 
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="/offices_managers/add/<%= id_global_manager %>" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+<div id="otherModal" class="modal" >
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="" width="450px;" height="500px;" id="frameEditar"></iframe>
+  </div>
+</div>
+
+<button id="nuevo"> Agregar gerente </button>
+
 <table width='80%' border=0>
  
     <tr style='text-align:left; background-color:#CCC'>
-        <th>Name</th>
-        <th>Lastname</th>
+        <th>Nombre</th>
         <th>Phone</th>
-        <th>Address</th>
         <th>City</th>
         <th>State</th>
-        <th>Postal Code</th>
-        <th>Country</th>
+        <th>Sucursal</th>
     </tr>
     
     <% if (data) { %>
     <% data.forEach(function(office_manager){ %>
         <tr>
-            <td><%= office_manager.name %></td>
-            <td><%= office_manager.lastname %></td>
+            <td><%= office_manager.name %> <%= office_manager.lastname %></td>
             <td><%= office_manager.phone %></td>
-            <td><%= office_manager.address %></td>
             <td><%= office_manager.city %></td>
             <td><%= office_manager.state %></td>
-            <td><%= office_manager.postal_code %></td>
-            <td><%= office_manager.country %></td>
+            <td><%= office_manager.name_office %></td>
             <td>
                 <div style="float:left">
-                    <a href="/offices_managers/edit/<%= office_manager.id_office_manager %>">Edit</a> &nbsp;
+                    <button class="edit" onclick="alerta(this)" id="editar<%= office_manager.idOfficeManager %>" value="<%= office_manager.idOfficeManager %>" > Ver gerente</button>
 
-                    <form method="post" action="/office_manager/delete/<%= office_manager.id_office_manager %>" style="float:right">
+                    <form method="post" action="/offices_managers/delete/<%= office_manager.idOfficeManager %>" style="float:right">
                         <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
                         <input type="hidden" name="_method" value="DELETE" />
                     </form>
@@ -50,7 +62,47 @@ including header content which is common for all pages
     <% } %>
  
 </table>
- 
+
+ <script>
+// Get the modal
+var modal = document.getElementById('myModal');
+var otherModal = document.getElementById('otherModal');
+
+// Get the button that opens the modal
+var agregar = document.getElementById("nuevo");
+var editar = document.getElementById("editar");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+// When the user clicks the button, open the modal 
+agregar.onclick = function() {
+    modal.style.display = "block";
+}
+
+function alerta(cliente) {
+    var iframe = document.getElementById('frameEditar')
+    iframe.src = "/offices_managers/edit/" + cliente.value;
+    otherModal.style.display = "block"
+    
+}
+
+function cerrarDialogo(){
+    otherModal.style.display = "none";
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+    if (event.target == otherModal) {
+        otherModal.style.display = "none";
+    }
+} 
+</script>
 <!--
 including footer content which is common for all pages
 -->

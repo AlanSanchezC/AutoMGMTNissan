@@ -1,0 +1,32 @@
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+
+<h3> Stock global </h3>
+
+<table width='80%' border=0>
+    <tr style='text-align:left; background-color:#CCC'>
+        <th>Vehículo</th>
+        <th>Detalles</th>
+        <th>Costo</th>
+        <th>Cantidad</th>
+    </tr>
+
+    <% if (stockGlobal) { %>
+    <% stockGlobal.forEach(function(stock){ %>
+        <tr>
+            <td><%= stock.model %></td>
+            <td><%= stock.details%></td>
+            <td><%= stock.cost %></td>
+            <td><%= stock.cantidadGlobal %></td>
+            
+             
+        </tr>
+    <% }) %>
+    <% } %>
+ 
+</table>

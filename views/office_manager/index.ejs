@@ -1,0 +1,14 @@
+<%- include ../layouts/header.ejs %>
+
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+<% if (officemanfullname) { %>
+<p align="right"> 
+    Hola <%= officemanfullname %><br>
+    <a href="/"><input type="button" value="Cerrar sesión" /></a>
+    </p>
+<% } %>
+
+<%- include ../stock/list.ejs %>
+
+<%-include ../layouts/footer.ejs %>

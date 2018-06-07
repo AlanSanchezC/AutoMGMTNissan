@@ -1,8 +1,7 @@
 <!--
 including header content which is common for all pages
 -->
-<%- include ../layouts/header.ejs %>    
- 
+ <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -10,48 +9,65 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>
- 
-<form action="/offices/add" method="post" name="form1">
-    <table width="25%" border="0">
+ <center>
+ <h2> Ingrese los datos de la sucursal nueva </h2>
+<form action="" method="post" name="form1">
+    <table width="70%" border="0">
         <tr> 
-            <td>Name</td>
+            <td>Nombre</td>
             <td><input type="text" name="name_office" id="name_office" value="<%= name_office %>" /></td>
         </tr>
         <tr> 
-            <td>Phone</td>
+            <td>Teléfono</td>
             <td><input type="text" name="phone" value="<%= phone %>" /></td>
         </tr>
         <tr> 
-            <td>Address</td>
+            <td>Dirección</td>
             <td><input type="text" name="address" value="<%= address %>" /></td>
         </tr>
         <tr> 
-            <td>City</td>
+            <td>Municipio</td>
             <td><input type="text" name="city" value="<%= city %>" /></td>
         </tr>
         <tr> 
-            <td>State</td>
+            <td>Estado</td>
             <td><input type="text" name="state" value="<%= state %>" /></td>
         </tr>
-
         <tr> 
-            <td>Postal code</td>
+            <td>Código postal</td>
             <td><input type="text" name="postal_code" value="<%= postal_code %>" /></td>
         </tr>
         <tr> 
-            <td>Country</td>
+            <td>País</td>
             <td><input type="text" name="country" value="<%= country %>" /></td>
         </tr>
         <tr> 
-            <td>Manager (id)</td>
-            <td><input type="text" name="id_office_manager" value="<%= id_office_manager %>" /></td>
+            <td>Gerente</td>
+            <td>
+                <select id="gerentes" onchange="cambio()">
+                    <option></option>
+                    <% if (data) { %>
+                        <% data.forEach(function(gerentes) { %>
+                            <option value="<%= gerentes.id_office_manager %>"> <%= gerentes.name + " " + gerentes.lastname + " " + "(" + gerentes.city + ")"%></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </td>
         </tr>
         <tr> 
-            <td><input type="submit" name="Submit" value="Agregar" /></td>
+            <td colspan="2" align="center"><input type="submit" name="Submit" value="Agregar" /></td>
         </tr>
     </table>
+    <input type="hidden" id="gerenteGlobal" value="<%= id_global_manager %>" />
 </form>
- 
+
+<script>
+function cambio(){
+    var id_new_officeman = document.getElementById("gerentes").value;
+    var id_global_manager = document.getElementById("gerenteGlobal").value;
+    document.form1.action = "/offices/addnew/" + id_new_officeman + "/" + id_global_manager;
+}
+</script>
 <!--
 including footer content which is common for all pages
 -->

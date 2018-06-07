@@ -1,8 +1,9 @@
 <!--
 including header content which is common for all pages
 -->
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<%- include ../layouts/header.ejs %>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
 
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
@@ -12,49 +13,63 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
-<div id="myModal" class="modal">
+<div id="nuevaSucursal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" onclick="cerrarDialogo()">&times;</span>
-    <iframe src="/customers/add/<%= id_seller %>" width="450px;" height="500px;"></iframe>
+    <iframe src="/offices/add/<%= id_global_manager %>/<%= state %>" id="frameNuevo" width="450px;" height="500px;"></iframe>
   </div>
 </div>
 
+<div id="editarSucursal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="" id="frameEditarSucursal" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
 
-<button id="nuevo"> Agregar cliente</button>
- 
-<table width='80%' border=0>
+<div id="nuevoGerente" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="offices_managers/add/<%= id_global_manager %>" id="frameNuevoGerente" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+<div id="editarGerente" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="" id="frameEditarGerente" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+<table width='90%' border=0>
  
     <tr style='text-align:left; background-color:#CCC'>
-        <th>Office name</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Postal Code</th>
-        <th>Country</th>
-        <th>Office manager</th>
+        <th>Nombre de sucursal</th>
+        <th>Teléfono</th>
+        <th>Dirección</th>
+        <th>Ubicación</th>
+        <th>Gerente</th>
     </tr>
     
     <% if (data) { %>
     <% data.forEach(function(office){ %>
         <tr>
             <td><%= office.name_office %></td>
-            <td><%= office.phone %></td>
-            <td><%= office.address %></td>
-            <td><%= office.city %></td>
-            <td><%= office.state %></td>
-            <td><%= office.postal_code %></td>
-            <td><%= office.country %></td>
-            <td><%= office.id_office_manager %></td>
+            <td><%= office.Ophone %></td>
+            <td><%= office.Oaddress %></td>
+            <td><%= office.Ocity + ", " + office.Ostate%></td>
+            <td>
+                <%= office.name + " " + office.lastname %>
+                <button class="editManager" onclick="alerta(this)" id="editMan<%= office.id_office_manager %>" value="<%= office.id_office_manager %>" > </button>
+            </td>
             <td>
                 <div style="float:left">
-                    <a href="/offices/edit/<%= office.id_office %>">Edit</a> &nbsp;
-
-                    <form method="post" action="/office/delete/<%= office.id_office %>" style="float:right">
-                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
-                        <input type="hidden" name="_method" value="DELETE" />
-                    </form>
+                    <button class="editOffice" onclick="alerta(this)" id="editOffice<%= office.id_office %>" value="<%= office.id_office %>" > Ver detalles</button>
+                    
                 </div>
             </td>
         </tr>
@@ -62,7 +77,66 @@ including header content which is common for all pages
     <% } %>
  
 </table>
- 
+ <script>
+// Get the modal
+var nuevaSucursal = document.getElementById('nuevaSucursal');
+var editarSucursal = document.getElementById('editarSucursal');
+var nuevoGerente = document.getElementById('nuevoGerente');
+var editarGerente = document.getElementById('editarGerente');
+
+
+// Get the button that opens the modal
+var nuevaS = document.getElementById("nuevaSuc");
+var nuevoG = document.getElementById("nuevoGer");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+nuevaS.onclick = function() {
+    nuevaSucursal.style.display = "block";
+}
+
+nuevoG.onclick = function(){
+    nuevoGerente.style.display = "block";
+}
+
+function cerrarDialogo(){
+    editarSucursal.style.display = "none";
+    nuevaSucursal.style.display = "none";
+    nuevoGerente.style.display = "none";
+    editarGerente.style.display = "none";
+}
+
+function alerta(sucursal) {
+    var c = sucursal.className;
+    if (c === 'editOffice'){
+        var iframe = document.getElementById('frameEditarSucursal')
+        iframe.src = "/offices/edit/" + sucursal.value;
+        editarSucursal.style.display = "block"
+    } else if (c === 'editManager'){
+        var iframe = document.getElementById('frameEditarGerente')
+        iframe.src = "/offices_managers/edit/" + sucursal.value;
+        editarGerente.style.display = "block"
+    }
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == nuevaSucursal) {
+        nuevaSucursal.style.display = "none";
+    }
+    if (event.target == editarSucursal) {
+        editarSucursal.style.display = "none";
+    }
+    if (event.target == nuevoGerente) {
+        nuevoGerente.style.display = "none";
+    }
+    if (event.target == editarGerente) {
+        editarGerente.style.display = "none";
+    }
+}
+</script>
 <!--
 including footer content which is common for all pages
 -->

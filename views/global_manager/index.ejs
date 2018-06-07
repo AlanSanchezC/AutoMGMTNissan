@@ -8,12 +8,39 @@
     <a href="/"><input type="button" value="Cerrar sesión" /></a>
     </p>
 <% } %>
+<center>
 
+<h3> Sucursales </h3>
+<button id="nuevaSuc"> Agregar sucursal</button>
+<button id="nuevoGer"> Agregar gerente </button>
+<br><br>
+<%- include ../office/list.ejs %>
+<br><br>
 
+<%- include stockglobal.ejs %>
+<br><br>
 
-<form action="offices/<%= id_global_manager %>" method="get">
-	<input type="submit" value="Oficinas" />
+<form action="" method="get" name="form1">
+	<% if (data) { %>
+
+	Ver stock de 
+
+	<select id="stockSucursal" onchange="cambio()">
+		<option value=""> -- Selecciona una sucursal --</option>
+	<% data.forEach(function(sucursal) { %>
+		<option value="<%= sucursal.id_office %>"><%= sucursal.name_office %></option>	
+	<% }) %>
+	</select>
+
+	<button id="stockSucursal"> Ver </button>
+
+	<% } %>
 </form>
-
+<script>
+	function cambio(){
+    var id_office = document.getElementById("stockSucursal").value;
+    document.form1.action = "/stocks/" + id_office;
+}
+</script>
 
 <%- include ../layouts/footer.ejs%>

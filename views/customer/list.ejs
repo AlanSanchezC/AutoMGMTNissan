@@ -79,17 +79,12 @@ var otherModal = document.getElementById('otherModal');
 var agregar = document.getElementById("nuevo");
 var editar = document.getElementById("editar");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-
 // When the user clicks the button, open the modal 
 agregar.onclick = function() {
     modal.style.display = "block";
 }
 
 function alerta(cliente) {
-    ////////////////////// Ver como evaluar la "class"
 
     if (cliente.className === 'edit'){
         var iframe = document.getElementById('frameEditar')

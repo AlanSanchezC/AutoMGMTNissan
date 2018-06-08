@@ -1,7 +1,4 @@
-<!--
-including header content which is common for all pages
--->
-<%- include ../layouts/header.ejs %>    
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
  
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
@@ -10,36 +7,27 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>
- 
-<form action="/vehicles/add" method="post" name="form1">
-    <table width="25%" border="0">
-        <tr> 
-            <td>Name</td>
-            <td><input type="text" name="name" id="name" value="<%= name %>" /></td>
+<center>
+<h2> Ingrese los datos del lote </h2>
+<form action="/vehicles/s/add" method="post" name="form1">
+    <table width="70%" border="0">
+        <td>Modelo</td>
+            <td><input type="text" name="modelo" value="<%= modelo %>" /></td>
         </tr>
         <tr> 
-            <td>Details</td>
-            <td><input type="text" name="details" value="<%= details %>" /></td>
+            <td>Detalles</td>
+            <td><input type="text" name="detalles" value="<%= detalles %>" /></td>
         </tr>
         <tr> 
-            <td>Model</td>
-            <td><input type="text" name="model" value="<%= model %>" /></td>
+            <td>Costo</td>
+            <td><input type="text" name="costo" value="<%= costo %>" /></td>
         </tr>
         <tr> 
-            <td>Model Details</td>
-            <td><input type="text" name="model_details" value="<%= model_details %>" /></td>
-        </tr>
-        <tr> 
-            <td>Cost</td>
-            <td><input type="text" name="cost" value="<%= cost %>" /></td>
-        </tr>
-        <tr> 
-            <td><input type="submit" name="Submit" value="Agregar" /></td>
+            <td>Cantidad inicial</td>
+            <td><input type="text" name="cantidad" value="<%= cantidad %>" /></td>
         </tr>
     </table>
+    <br><br>
+    <input type="submit" name="Submit" value="Agregar" />
 </form>
  
-<!--
-including footer content which is common for all pages
--->
-<%- include ../layouts/footer.ejs %>

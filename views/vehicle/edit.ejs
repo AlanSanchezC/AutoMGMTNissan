@@ -1,5 +1,5 @@
-<%- include ../layouts/header.ejs %>    
-        
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -8,27 +8,23 @@
     <p style="color:green"><%- messages.success %></p>
 <% } %>
  
-<form action="/vehicles/edit/<%= id_vehicle %>" method="POST" name="form1">
+<form action="/vehicles/edit/<%= id_vehicle_model %>" method="POST" name="form1">
     <table width="25%" border="0">
         <tr> 
-            <td>Name</td>
-            <td><input type="text" name="name" id="name" value="<%= name %>" /></td>
-        </tr>
-        <tr> 
-            <td>Details</td>
-            <td><input type="text" name="details" value="<%= details %>" /></td>
-        </tr>
-        <tr> 
-            <td>Model</td>
+            <td>Modelo</td>
             <td><input type="text" name="model" value="<%= model %>" /></td>
         </tr>
         <tr> 
-            <td>Model details</td>
+            <td>Detalles</td>
             <td><input type="text" name="model_details" value="<%= model_details %>" /></td>
         </tr>
         <tr> 
-            <td>Cost</td>
+            <td>Costo</td>
             <td><input type="text" name="cost" value="<%= cost %>" /></td>
+        </tr>
+        <tr> 
+            <td>Cantidad</td>
+            <td><input type="text" name="cantidadTotal" value="<%= cantidadTotal %>" /></td>
         </tr>
         <tr> 
             <td><input type="submit" name="Submit" value="Guardar" /></td>
@@ -36,8 +32,3 @@
     </table>
     <input type="hidden" name="_method" value="PUT" />
 </form>
- 
-<!--
-including footer content which is common for all pages
--->
-<%- include ../layouts/footer.ejs %>

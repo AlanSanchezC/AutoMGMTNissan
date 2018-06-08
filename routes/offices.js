@@ -82,7 +82,7 @@ router.post('/addnew/(:id_office_manager)/(:id_global_manager)', function(req, r
             id_office_manager: req.params.id_office_manager,
             id_global_manager: req.params.id_global_manager
         }
-        console.log(office)
+
         req.getConnection(function(error, conn) {
             conn.query('INSERT INTO offices SET ?', office, function(err, result) {
                 

@@ -16,56 +16,77 @@
   </div>
 </div>
 
-<h3> Stock de vehículos </h3>
+<div id="agregarLote" class="modal" >
+  <!-- Modal content -->
+  <div class="modal-content" style="width: 510px;">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="" id="frameAgregarLote" width="500px;" height="230px;"></iframe>
+  </div>
+</div>
+<center>
 
 <table width='80%' border=0>
     <tr style='text-align:left; background-color:#CCC'>
-        <th>Cantidad</th>
+        
         <th>Nombre</th>
         <th>Detalles</th>
         <th>Costo</th>
+        <th>Cantidad en sucursal</th>
     </tr>
 
     <% if (data) { %>
     <% data.forEach(function(stock){ %>
         <tr>
-            <td><%= stock.cantidad %></td>
+            
             <td><%= stock.model %></td>
             <td><%= stock.details%></td>
             <td><%= stock.cost %></td>
-            <td>
-                <div style="float:left">
-                    <button class="editStock" onclick="alerta(this)" id="editStock<%= stock.id_stock %>" value="<%= stock.id_stock %>" > Editar</button>
-                </div>
-            </td>
+            <td><%= stock.cant %></td>
         </tr>
     <% }) %>
-    <% } %>
- 
+    <% } %> 
 </table>
+<br><br>
+
+Agregar lote de 
+<select id="agregarAutoSucursal" onchange="agregarLoteASucursal(this)">
+    <% if (stockGlobal) { %>
+        <% stockGlobal.forEach(function(auto){ %>
+            <option value="<%= auto.id_vehicle%>/<%= auto.cantidadTotal %>/<%= data[0].id_office %>" id="<%= auto.id_vehicle %>"><%= auto.model %> </option>
+        <% }) %>
+    <% } %> 
+</select>
 
 <script>
 // Get the modal
 var editarVehicStock = document.getElementById('editarVehiculoStock');
+var agregarLoteSuc = document.getElementById('agregarLote')
 
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
 function cerrarDialogo(){
     editarVehicStock.style.display = "none";
+    agregarLoteSuc.style.display = "none";
 }
 
-function alerta(vehiculoStock) {
+function editarVehiculo(vehiculoStock) {
     var iframe = document.getElementById('frameEditarStock')
     iframe.src = "/stocks/edit/" + vehiculoStock.value;
-    //alert(iframe.src)
     editarVehicStock.style.display = "block"
+}
+
+function agregarLoteASucursal(vehiculo){
+    document.getElementById('frameAgregarLote').src = "/stocks/add/" + vehiculo.value;
+    agregarLoteSuc.style.display = "block"
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == editarVehicStock) {
         editarVehicStock.style.display = "none";
+    }
+    if (event.target == agregarLoteSuc) {
+        agregarLoteSuc.style.display = "none";
     }
 }
 </script>

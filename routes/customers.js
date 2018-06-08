@@ -160,7 +160,6 @@ router.get('/edit/(:id_customer)', function(req, res, next){
                 res.redirect('/customer')
             }
             else { // if user found
-                console.log("SI")
                 res.render("customer/edit", {
                     title: TITLE, 
                     id_customer: rows[0].id_customer,
@@ -261,7 +260,6 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
             country: req.sanitize('country').escape().trim()
         }
         req.getConnection(function(error, conn) {
-            console.log("entra")
             conn.query('UPDATE customers SET ? WHERE id_customer = ' + req.params.id_customer, customer, function(err, result) {
                 //if(err) throw err
 

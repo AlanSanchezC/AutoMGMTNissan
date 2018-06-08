@@ -6,7 +6,7 @@ var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
 
-// SHOW LIST FROM OFFICE
+// SHOW LIST
 router.get('/(:id_office_manager)', function(req, res, next) {
     req.getConnection(function(error, conn) {
         conn.query("SELECT offices_managers.id_office_manager, " +
@@ -28,6 +28,7 @@ router.get('/(:id_office_manager)', function(req, res, next) {
                     stock: ''
                 })
             } else {
+                
                 console.log(JSON.stringify(rows))
                 res.redirect('/session')
             }
@@ -35,107 +36,91 @@ router.get('/(:id_office_manager)', function(req, res, next) {
     })
 })
  
-// SHOW ADD 
-router.get('/add', function(req, res, next){    
+// SHOW ADD customer FORM user
+router.get('/s/add', function(req, res, next){    
     res.render('vehicle/add', {
-        title: 'Add New vehicle',
-        name: '',
-        details: '',
-        model: '',
-        model_details: '',
-        cost: ''
+        modelo: '',
+        detalles: '',
+        costo: '',
+        cantidad: ''
     })
 })
  
-// ADD NEW x POST ACTION
-router.post('/add', function(req, res, next){    
-    req.assert('name', 'Name is required').notEmpty()           //Validate name
-    req.assert('details', 'Details are required').notEmpty()   //Validate 
-    req.assert('model', 'A valid model is required').notEmpty()   //Validate
-    req.assert('model_details', 'Model details are required').notEmpty()   //Validate
-    req.assert('cost', 'A valid cost is required').notEmpty()   //Validate 
+// ADD NEW customer POST ACTION
+router.post('/s/add', function(req, res, next){    
+    req.assert('modelo', 'Se requiere un modelo').notEmpty()           //Validate name
+    req.assert('detalles', 'Detalles requeridos').notEmpty()   //Validate lastname
+    req.assert('costo', 'Costo requerido').notEmpty()   //Validate
+    req.assert('cantidad', 'Cantidad requerida').notEmpty()   //Validate
     
- 
     var errors = req.validationErrors()
     
-    if( !errors ) {
-        var vehicle = {
-            name: req.sanitize('name').escape().trim(),
-            details: req.sanitize('details').escape().trim(),
-            model: req.sanitize('model').escape().trim(),
-            model_details: req.sanitize('model_details').escape().trim(),
-            cost: req.sanitize('cost').escape().trim()
+    if( !errors ) {   //No errors were found.  Passed Validation!
+        var vehicle_model = {
+            model: unescape(req.body.modelo),
+            details: req.sanitize('detalles').escape().trim(),
+            cost: req.sanitize('costo').escape().trim()
         }
-        
         req.getConnection(function(error, conn) {
-            /*
-
-                ///////////////////  Insert into multiple tables at once
-
-            */
-            conn.query('INSERT INTO vehicles SET ?', vehicle, function(err, result) {
-                if (err) {
-                    req.flash('error', err)
-                    res.render('vehicle/add', {
-                        title: 'Add New vehicle',
-                        name: vehicle.name,
-                        lastname: vehicle.lastname,
-                        phone: vehicle.phone,
-                        address: vehicle.address,
-                        city: vehicle.city,
-                        state: vehicle.lastname,
-                        postal_code: vehicle.postal_code,
-                        country: vehicle.country,
-                        id_seller: vehicle.id_seller
-                    })
-                } else {                
-                    req.flash('success', 'Data added successfully!')
-                    
-                    res.render('vehicle/add', {
-                        title: 'Add New vehicle',
-                        name: '',
-                        lastname: '',
-                        phone: '',
-                        address: '',
-                        city: '',
-                        state: '',
-                        postal_code: '',
-                        country: '',
-                        id_seller: ''
-                    })
+            conn.query('INSERT INTO vehicles_models SET ?', vehicle_model, function(err, result) {
+                var vehicle = {
+                        name: vehicle_model.model,
+                        details: vehicle_model.details,
+                        id_vehicle_status: 1,
+                        id_vehicle_model: result.insertId,
+                        cantidadTotal: req.sanitize('cantidad').escape().trim()
                 }
+                conn.query('INSERT INTO vehicles SET ?', vehicle, function(err2, result2) {
+                    if (err || err2) {
+                        req.flash('error', err)
+                        
+                        res.render('vehicle/add', {
+                            modelo: vehicle_model.model,
+                            detalles: vehicle_model.details,
+                            costo: vehicle_model.cost,
+                            cantidadTotal: vehicle.cantidadTotal
+                        })
+                    } else {                
+                        req.flash('success', 'Vehículo agregado exitosamente!')
+                        
+                        res.render('vehicle/add', {
+                            modelo: '',
+                            detalles: '',
+                            costo: '',
+                            cantidad: ''
+                        })
+                    }
+                })
             })
         })
     }
-    else {   
+    else {   //Display errors to customer
         var error_msg = ''
         errors.forEach(function(error) {
             error_msg += error.msg + '<br>'
         })                
         req.flash('error', error_msg)        
         
+        /**
+         * Using req.body.name 
+         * because req.param('name') is deprecated
+         */ 
         res.render('vehicle/add', { 
-            title: 'Add New Vehicle',
-            name: req.body.name,
-            lastname: req.body.lastname,
-            phone: req.body.phone,
-            address: req.body.address,
-            city: req.body.city,
-            state: req.body.state,
-            postal_code: req.body.postal_code,
-            country: req.body.country,
-            id_seller: req.body.id_seller
+            model: '',
+            detalles: '',
+            costo: '',
+            cantidad: ''
         })
     }
 })
  
 // SHOW EDIT USER FORM
-router.get('/edit/(:id_vehicle)', function(req, res, next){
+router.get('/edit/(:id_vehicle_model)', function(req, res, next){
     req.getConnection(function(error, conn) {
-        conn.query("SELECT vehicles.name, vehicles.details, vehicles_models.model as model, vehicles_models.details as model_details, vehicles_models.cost " + 
+        conn.query("SELECT vehicles.id_vehicle, vehicles.cantidadTotal, vehicles_models.model as model, vehicles_models.details as model_details, vehicles_models.cost, vehicles.id_vehicle_model " + 
                     "FROM vehicles INNER JOIN vehicles_models " + 
-                    "ON vehicles.id_vehicle = vehicles_models.id_vehicle_model" +
-                    "WHERE id_vehicle = " + req.params.id_vehicle, function(err, rows, fields) {
+                    "ON vehicles.id_vehicle_model = vehicles_models.id_vehicle_model " +
+                    "WHERE vehicles.id_vehicle_model = " + req.params.id_vehicle_model, function(err, rows, fields) {
             if(err) throw err
             
             // if  not found 
@@ -146,12 +131,11 @@ router.get('/edit/(:id_vehicle)', function(req, res, next){
             else { // if  found
                 res.render("vehicle/edit", {
                     title: 'Edit vehicle', 
-                    id_vehicle: rows[0].id_vehicle,
-                    name: rows[0].name,
-                    details: rows[0].details,
+                    id_vehicle_model: req.params.id_vehicle_model,
                     model: rows[0].model,
                     model_details: rows[0].model_details,
-                    cost: rows[0].cost
+                    cost: rows[0].cost,
+                    cantidadTotal: rows[0].cantidadTotal
                 })
             }            
         })
@@ -159,56 +143,57 @@ router.get('/edit/(:id_vehicle)', function(req, res, next){
 })
  
 // EDIT USER POST ACTION
-router.put('/edit/(:id_vehicle)', function(req, res, next) {
-    req.assert('name', 'Name is required').notEmpty()           //Validate name
-    req.assert('details', 'Details are required').notEmpty()   //Validate 
-    req.assert('model', 'A valid model is required').notEmpty()   //Validate
-    req.assert('model_details', 'Model details are required').notEmpty()   //Validate
-    req.assert('cost', 'A valid cost is required').notEmpty()   //Validate 
+router.put('/edit/(:id_vehicle_model)', function(req, res, next) {
+    req.assert('model', 'Modelo requerido').notEmpty()   //Validate
+    req.assert('model_details', 'Descripción requerida').notEmpty()   //Validate
+    req.assert('cost', 'Costo requerido').notEmpty()   //Validate 
+    req.assert('cantidadTotal', 'Cantidad requerida').notEmpty()   //Validate 
 
     var errors = req.validationErrors()
     
     if( !errors ) {
-        var vehicle = {
-            name: req.sanitize('name').escape().trim(),
-            details: req.sanitize('details').escape().trim(),
-            model: req.sanitize('model').escape().trim(),
-            model_details: req.sanitize('model_details').escape().trim(),
+        var vehicle_model = {
+            model: unescape(req.body.model),
+            details: req.sanitize('model_details').escape().trim(),
             cost: req.sanitize('cost').escape().trim()
         }
         
-        /*
-
-                ///////////////////  Update multiple tables at once
-
-        */
 
         req.getConnection(function(error, conn) {
-            conn.query('UPDATE vehicles SET ? WHERE id_vehicle = ' + req.params.id_vehicle, vehicle, function(err, result) {
-                if (err) {
-                    req.flash('error', err)
-                    
-                    res.render('vehicle/edit', {
-                        title: 'Edit vehicle',
-                        name: req.body.name,
-                        details: req.body.details,
-                        model: req.body.model,
-                        model_details: req.body.model_details,
-                        cost: req.body.cost
-                    })
-                } else {
-                    req.flash('success', 'Data updated successfully!')
-                    
-                    res.render('vehicle/edit', {
-                        title: 'Edit vehicle',
-                        id_vehicle: req.params.id_vehicle,
-                        name: req.body.name,
-                        details: req.body.details,
-                        model: req.body.model,
-                        model_details: req.body.model_details,
-                        cost: req.body.cost
-                    })
+            conn.query('UPDATE vehicles_models SET ? WHERE id_vehicle_model = ' + req.params.id_vehicle_model, vehicle_model, function(err, result) {
+                var vehicle = {
+                        name: vehicle_model.model,
+                        details: vehicle_model.details,
+                        id_vehicle_status: 1,
+                        id_vehicle_model: req.params.id_vehicle_model,
+                        cantidadTotal: req.sanitize('cantidadTotal').escape().trim()
                 }
+                console.log(vehicle)
+                conn.query('UPDATE vehicles SET ? WHERE id_vehicle_model = ' + req.params.id_vehicle_model, vehicle, function(err2, result2) {
+                    if (err) {
+                        req.flash('error', err)
+                        
+                        res.render('vehicle/edit', {
+                            title: 'Edit vehicle',
+                            id_vehicle_model: req.params.id_vehicle_model,
+                            model: req.body.model,
+                            model_details: req.body.model_details,
+                            cost: req.body.cost,
+                            cantidadTotal: req.body.cantidadTotal
+                        })
+                    } else {
+                        req.flash('success', 'Data updated successfully!')
+                        
+                        res.render('vehicle/edit', {
+                            title: 'Edit vehicle',
+                            id_vehicle_model: req.params.id_vehicle_model,
+                            model: req.body.model,
+                            model_details: req.body.model_details,
+                            cost: req.body.cost,
+                            cantidadTotal: req.body.cantidadTotal
+                        })
+                    }
+                })
             })
         })
     }

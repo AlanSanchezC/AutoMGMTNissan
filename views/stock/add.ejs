@@ -1,0 +1,24 @@
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+<center>
+<h2> Ingrese los datos del lote </h2>
+<form action="/stocks/add/<%= id_vehicle %>/<%= cantidadTotal %>/<%= id_office %>" method="post" name="form1">
+    <table width="70%" border="0">
+        <tr> 
+            <td>Modelo</td>
+            <td><b><%= modelo %></b></td>
+        </tr>
+        <tr> 
+            <td>Cantidad disponible. Máximo: <%= maximo %></td>
+            <td><input type="text" name="cantidad" value="<%= cantidad %>" /></td>
+        </tr>
+    </table>
+    <br><br>
+    <input type="submit" name="Submit" value="Agregar" />
+</form>

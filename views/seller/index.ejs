@@ -11,26 +11,8 @@
     <a href="/"><input type="button" value="Cerrar sesión" /></a>
     </p>
 <% } %>
-
-<button id="cats" onclick="catalogos()"> Cat </button>
-
-<script>
-function catalogos() {
-    var clientes = document.getElementById("catalogoClientes");
-    var vehiculos = document.getElementById("catalogoVehiculos");
-
-    if (clientes.style.display === "none") {
-        clientes.style.display = "block";
-        vehiculos.style.display = "none";
-    } else {
-        clientes.style.display = "none";
-        vehiculos.style.display = "block";
-    }
-}
-
-</script>
-
-<div id="catalogoClientes" style="display:none;">
+<center>
+<div id="catalogoClientes">
   <%- include ../customer/list.ejs %>
 </div>
 <br>

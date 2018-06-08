@@ -104,12 +104,11 @@ router.post('/session', function(req, res, next){
                                         "INNER JOIN offices_managers ON offices.id_office_manager = offices_managers.id_office_manager " +
                                         "WHERE offices.id_global_manager = ? " +
                                         "ORDER BY offices.state DESC;", rows[0].id_global_manager, function(err, rows2, fields) {
-                                conn.query("SELECT stocks.*, offices.id_office, vehicles.id_vehicle, vehicles.id_vehicle_model, vehicles_models.*, sum(stocks.cantidad) as cantidadGlobal " +
-                                            "FROM stocks " +
-                                            "INNER JOIN vehicles ON stocks.id_vehicle = vehicles.id_vehicle " +
-                                            "INNER JOIN vehicles_models ON vehicles.id_vehicle_model = vehicles_models.id_vehicle_model " +
-                                            "INNER JOIN offices ON stocks.id_office = offices.id_office " + 
-                                            "WHERE offices.id_global_manager = ? GROUP BY vehicles_models.model;", rows[0].id_global_manager ,function (err, rows3, fields){
+                                conn.query("SELECT vehicles.id_vehicle, vehicles.cantidadTotal, vehicles_models.model, vehicles_models.cost, vehicles_models.details, vehicles_models.id_vehicle_model " +
+                                            "from vehicles "+
+                                            "INNER JOIN vehicles_models ON vehicles_models.id_vehicle_model = vehicles.id_vehicle_model " +
+                                            "GROUP BY vehicles.id_vehicle "+
+                                            "ORDER BY vehicles.cantidadTotal DESC, vehicles_models.model ;", rows[0].id_global_manager ,function (err, rows3, fields){
                                     if(rows.length === 0){
                                         res.render('',{
                                             title: TITLE,

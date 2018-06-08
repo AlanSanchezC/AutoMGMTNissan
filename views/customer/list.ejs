@@ -29,11 +29,11 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
   </div>
 </div>
 
-<br>
+<h3> Catálogo de clientes </h3>
 <button id="nuevo"> Agregar cliente</button>
 <input type="text" id="nombre" placeholder="Nombre del cliente" />
 <button id="busqueda"> Buscar </button>
-
+<br><br>
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -42,7 +42,7 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
     <p style="color:green"><%- messages.success %></p>
 <% } %> 
 
-<h3> Catálogo de clientes </h3>
+
 
 <% if (data) { %>
 <table width='80%' border=0>

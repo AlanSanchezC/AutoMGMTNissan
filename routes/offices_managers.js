@@ -215,7 +215,6 @@ router.put('/edit/(:id_office_manager)', function(req, res, next) {
         req.getConnection(function(error, conn) {
             conn.query('UPDATE offices_managers SET ? WHERE id_office_manager = ' + req.params.id_office_manager, office_manager, function(err, result) {
                 //if(err) throw err
-                console.log(result)
                 if (err) {
                     req.flash('error', err)
                     

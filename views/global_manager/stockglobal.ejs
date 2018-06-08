@@ -6,27 +6,84 @@
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
+<div id="agregarVehiculoEnStockGlobal" class="modal" >
+  <!-- Modal content -->
+  <div class="modal-content" style="width: 420px;">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="/vehicles/s/add" id="aVSG" width="400px;" height="270px;"></iframe>
+  </div>
+</div>
+
+<div id="editarVehiculosStockGlobal" class="modal" >
+  <!-- Modal content -->
+  <div class="modal-content" style="width: 420px;">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="" id="eVSG" width="400px;" height="270px;"></iframe>
+  </div>
+</div>
+
 <h3> Stock global </h3>
 
+<button id="nuevoVSG">Agregar vehículo</button>
+<br><br>
 <table width='80%' border=0>
     <tr style='text-align:left; background-color:#CCC'>
         <th>Vehículo</th>
         <th>Detalles</th>
         <th>Costo</th>
-        <th>Cantidad</th>
+        <th>Cantidad total</th>
     </tr>
 
     <% if (stockGlobal) { %>
-    <% stockGlobal.forEach(function(stock){ %>
+    <% stockGlobal.forEach(function(vehiculo){ %>
         <tr>
-            <td><%= stock.model %></td>
-            <td><%= stock.details%></td>
-            <td><%= stock.cost %></td>
-            <td><%= stock.cantidadGlobal %></td>
-            
-             
+            <td><%= vehiculo.model %></td>
+            <td><%= vehiculo.details%></td>
+            <td><%= vehiculo.cost %></td>
+            <td><%= vehiculo.cantidadTotal %></td>
+            <td>
+                <button class="edit" onclick="editarVehiculo(this)" id="<%= vehiculo.id_vehicle_model %>" value="<%= vehiculo.id_vehicle_model %>"> Editar
+                </button>
+            </td>
         </tr>
     <% }) %>
     <% } %>
- 
 </table>
+
+<script>
+    var agregarVSG = document.getElementById('agregarVehiculoEnStockGlobal');
+    var editarVSG = document.getElementById('editarVehiculosStockGlobal');
+
+    var span = document.getElementsByClassName("close")[0];
+    var addVSG = document.getElementById("nuevoVSG");
+
+    // When the user clicks the button, open the agregarVSG 
+    addVSG.onclick = function() {
+        agregarVSG.style.display = "block";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == agregarVSG) {
+            agregarVSG.style.display = "none";
+        }
+    }
+
+    function cerrarDialogo(){
+        agregarVSG.style.display = "none";
+        editarVSG.style.display = "none";
+    }
+
+    function editarVehiculo(vehiculo){
+       document.getElementById('eVSG').src = "/vehicles/edit/" + vehiculo.value;
+        editarVSG.style.display = "block"
+    }
+
+    window.onclick = function(event) {
+    if (event.target == agregarVSG) {
+        agregarVSG.style.display = "none";
+    }
+    if (event.target == editarVSG) {
+        editarVSG.style.display = "none";
+    }
+} 
+</script>

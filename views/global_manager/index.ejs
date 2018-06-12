@@ -10,6 +10,23 @@
 <% } %>
 <center>
 
+<div id="nuevaSucursal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="/offices/add/<%= id_global_manager %>/<%= state %>" id="frameNuevo" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+<div id="nuevoGerente" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <iframe src="offices_managers/add/<%= id_global_manager %>" id="frameNuevoGerente" width="450px;" height="500px;"></iframe>
+  </div>
+</div>
+
+
 <h3> Sucursales </h3>
 <button id="nuevaSuc"> Agregar sucursal</button>
 <button id="nuevoGer"> Agregar gerente </button>
@@ -38,11 +55,37 @@ Ver stock de
 
 
 <script>
-	function cambio(){
-	    var id_office = document.getElementById("stockSucursal").value;
-	    document.getElementById('frameStockSucursal').style.display = "block";
-	    document.getElementById('frameStockSucursal').src = "/stocks/" + id_office;
-	}
+function cerrarDialogo(dialogo){
+    editarSucursal.style.display = "none";
+    nuevaSucursal.style.display = "none";
+    nuevoGerente.style.display = "none";
+    editarGerente.style.display = "none";
+    agregarVSG.style.display = "none";
+    editarVSG.style.display = "none";
+}
+
+window.onclick = function(event) {
+
+    if (event.target == nuevaSucursal) {
+        nuevaSucursal.style.display = "none";
+    } else if (event.target == editarSucursal) {
+        editarSucursal.style.display = "none";
+    } else if (event.target == nuevoGerente) {
+        nuevoGerente.style.display = "none";
+    } else if (event.target == editarGerente) {
+        editarGerente.style.display = "none";
+    } else if (event.target == agregarVSG) {
+        agregarVSG.style.display = "none";
+    } else if (event.target == editarVSG) {
+        editarVSG.style.display = "none";
+    }
+}
+
+function cambio(){
+    var id_office = document.getElementById("stockSucursal").value;
+    document.getElementById('frameStockSucursal').style.display = "block";
+    document.getElementById('frameStockSucursal').src = "/stocks/" + id_office;
+}
 </script>
 
 <%- include ../layouts/footer.ejs%>

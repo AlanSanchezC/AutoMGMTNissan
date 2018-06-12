@@ -29,7 +29,6 @@ router.get('/(:id_office_manager)', function(req, res, next) {
                 })
             } else {
                 
-                console.log(JSON.stringify(rows))
                 res.redirect('/session')
             }
         })

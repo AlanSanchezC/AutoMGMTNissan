@@ -1,0 +1,23 @@
+<!--
+including header content which is common for all pages
+-->   
+ <link rel="stylesheet" type="text/css" href="/css/style.css" />
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+<center>
+
+<form action="/payments/p/add/<%= id_order %>" method="post" name="form1">
+    <h2> Ingrese el monto a depositar </h2><br>
+    <input type="text" name="deposit_amount" id="deposit_amount" value="<%= deposit_amount %>" />
+    <input type="submit" name="Submit" value="Agregar" />
+</form>
+
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

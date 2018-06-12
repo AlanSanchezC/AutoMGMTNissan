@@ -1,0 +1,59 @@
+<!--
+including header content which is common for all pages
+-->   
+ <link rel="stylesheet" type="text/css" href="/css/style.css" />
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+<center>
+<h2> Nuevo pedido </h2><br>
+<form action="" id="form1" method="post" name="form1">
+    <select id="idvehiculo" onchange="elegir(this)">
+        <option value="_">-- Selecciona un vehículo --</option>
+        <% if (vehiculos) { %>
+            <% vehiculos.forEach(function(v) { %>
+            <option value="<%= v.id_vehicle + '|' + v.cost %>">
+                <%= v.name %>
+            </option>
+            <% }) %>
+        <% } %>
+    </select>
+    <br><br>
+    <div id="datosPedido" style="display: none;">
+        Tipo de compra <br><br>
+        <input type="radio" name="order_type" value="3" required>&nbsp;Apartado &nbsp;
+        <input type="radio" name="order_type" value="4">&nbsp;Pago a plazos &nbsp;
+        <input type="radio" name="order_type" value="2">&nbsp;Pago al contado<br><br><br>
+
+        Total a pagar <input type="text" name="costo" id="costo" readonly="true"></p>
+        
+        Depósito inicial <input type="text" name="deposito_inicial" id="deposito_inicial" onkeypress="calcularRestante()" required /><br><br>
+
+        Observaciones <textarea id="comentarios" name="comentarios" rows="3" required></textarea><br><br>
+
+        <input type="submit" value="Realizar pedido" />
+    </div>
+</form>
+<input type="hidden" id="idcustomer" value="<%= id_customer%>" />
+<input type="hidden" id="idseller" value="<%= id_seller%>" />
+<input type="hidden" id="idoffice" value="<%= id_office%>" />
+<script>
+function elegir(vehiculo){
+    if (vehiculo.value === "_"){
+        document.getElementById('costo').value = " ";
+        document.getElementById('datosPedido').style.display = "none";
+    }
+    else {
+        document.getElementById('datosPedido').style.display = "block";
+        document.getElementById('costo').value = vehiculo.value.split('|')[1];
+        document.getElementById('form1').action = "/orders/b/add/" + vehiculo.value.split('|')[0] + "/" + document.getElementById('idcustomer').value + "/" + document.getElementById('idseller').value + "/" + document.getElementById('idoffice');
+    }
+}
+</script>
+
+
+<%- include ../layouts/footer.ejs %>

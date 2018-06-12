@@ -18,18 +18,20 @@ router.get('/(:id_office)', function(req, res, next) {
                     "INNER JOIN offices ON offices.id_office = stocks.id_office " +
                     "WHERE stocks.id_office = ? " + 
                     "GROUP BY stocks.id_vehicle "+
+                    "HAVING cant > 0 "+
                     "ORDER BY cant DESC;", req.params.id_office, function(err, rows, fields) {
             conn.query("SELECT vehicles.id_vehicle, vehicles.id_vehicle_model, vehicles.cantidadTotal, vehicles_models.id_vehicle_model, vehicles_models.model, vehicles_models.cost, vehicles_models.details " +
                         "from vehicles "+
                         "INNER JOIN vehicles_models ON vehicles_models.id_vehicle_model = vehicles.id_vehicle_model " +
                         "GROUP BY vehicles.id_vehicle "+
-                        "ORDER BY vehicles.cantidadTotal, vehicles_models.model DESC;",function(err2, rows2, fields2) {
+                        "ORDER BY vehicles.cantidadTotal, vehicles_models.model DESC;",function(err2, rows2, fields2) {                
                 if (err || rows.length === 0) {
                     req.flash('error', err)
                     res.render('stock/list', {
                         title: 'Customer List', 
                         data: '',
-                        stockGlobal: rows2
+                        stockGlobal: rows2,
+                        cmd: ''
                     })
                 } else {
                     res.render('stock/list', {
@@ -37,7 +39,8 @@ router.get('/(:id_office)', function(req, res, next) {
                         data: rows,
                         stockGlobal: rows2,
                         id_stock: rows[0].id_stock,
-                        id_vehicle_model: rows[0].id_vehicle_model
+                        id_vehicle_model: rows[0].id_vehicle_model,
+                        cmd: ''
                     })
                 }
             })
@@ -86,7 +89,7 @@ router.post('/add/(:id_vehicle)/(:cantidadTotal)/(:id_office)', function(req, re
 
         req.getConnection(function(error, conn) {
             conn.query('UPDATE vehicles SET ? WHERE id_vehicle = ' + req.params.id_vehicle, vehiculoActualizado, function(err, result) {
-                console.log("Total actualizado")
+                
                 var time = moment();
                 var fecha = time.format('DD[/]MM[/]YYYY h:mm:ss a');
                 
@@ -96,7 +99,6 @@ router.post('/add/(:id_vehicle)/(:cantidadTotal)/(:id_office)', function(req, re
                     cantidad: cantidadStock,
                     data_at: fecha
                 }
-                console.log(stockNuevo)
                 conn.query('INSERT INTO stocks SET ?', stockNuevo, function(err2, result2) {
                     if (err || err2) {
                         req.flash('error', err)
@@ -230,31 +232,6 @@ router.put('/edit/(:id_stock)/(:id_vehicle_model)', function(req, res, next) {
             data: ''
         })
     }
-})
- 
-// DELETE USER
-router.delete('/delete/(:id_stock)', function(req, res, next) {
-    var customer = { 
-        id: req.params.id_customer,
-        idseller: req.params.idseller
-    }
-/*
-        ///// BAD
-*/
-    req.getConnection(function(error, conn) {
-
-        conn.query("DELETE FROM stocks WHERE id_customer = '"+ customer.id + "';", function(err, result) {
-            //if(err) throw err
-            if (err) {
-                req.flash('error', err)
-                // redirect to users list page
-            } else {
-                req.flash('success', 'Cliente eliminado exitosamente!')
-                // redirect to customer list page
-                req.flash('back') 
-            }
-        })
-    })
 })
  
 module.exports = router

@@ -21,7 +21,6 @@ router.get('/(:id_manager)', function(req, res, next) {
                     data: ''
                 })
             } else {
-                console.log(rows)
                 res.render('office/list', {
                     title: 'Lista de sucursales', 
                     data: rows,
@@ -86,7 +85,6 @@ router.post('/addnew/(:id_office_manager)/(:id_global_manager)', function(req, r
         req.getConnection(function(error, conn) {
             conn.query('INSERT INTO offices SET ?', office, function(err, result) {
                 
-                console.log(result)
                 conn.query("UPDATE offices_managers SET job = 'Office Manager' WHERE id_office_manager = ?", office.id_office_manager, function(err, result) {
                     res.render('office/success')
                 })

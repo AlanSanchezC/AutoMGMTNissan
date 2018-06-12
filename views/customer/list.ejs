@@ -5,34 +5,32 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-<div id="myModal" class="modal">
+<div id="agregarClienteNuevo" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <span class="close" onclick="cerrarDialogos()">&times;</span>
     <iframe src="/customers/add/<%= id_seller %>" width="450px;" height="500px;"></iframe>
   </div>
 </div>
 
-<div id="otherModal" class="modal" >
+<div id="editarClienteExistente" class="modal" >
   <!-- Modal content -->
   <div class="modal-content">
-    <span class="close" onclick="cerrarDialogo()">&times;</span>
+    <span class="close" onclick="cerrarDialogos()">&times;</span>
     <iframe src="" width="450px;" height="500px;" id="frameEditar"></iframe>
   </div>
 </div>
 
-<div id="anotherModal" class="modal" >
+<div id="verPedidos" class="modal" >
   <!-- Modal content -->
-  <div class="modal-content" style="width: 1050px;">
-    <span class="close" onclick="cerrarDialogo()">&times;</span>
-    <iframe src="" width="1020px;" height="500px;" id="framePedidos"></iframe>
+  <div class="modal-content" style="width: 800px;">
+    <span class="close" onclick="cerrarDialogos()">&times;</span>
+    <iframe src="" width="780px;" height="500px;" id="framePedidos"></iframe>
   </div>
 </div>
 
 <h3> Catálogo de clientes </h3>
 <button id="nuevo"> Agregar cliente</button>
-<input type="text" id="nombre" placeholder="Nombre del cliente" />
-<button id="busqueda"> Buscar </button>
 <br><br>
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
@@ -45,7 +43,7 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
 
 
 <% if (data) { %>
-<table width='80%' border=0>
+<table width='70%' border=0>
     <tr style='text-align:left; background-color:#CCC'>
         <th>Nombre</th>
         <th>Teléfono</th>
@@ -53,13 +51,13 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
     </tr>
     <% data.forEach(function(customer){ %>
         <tr>
-            <td><%= customer.name + " " + customer.lastname%></td>
+            <td><%= customer.name + " " + customer.lastname%>
+                 <button class="edit" onclick="alerta(this)" id="editar<%= customer.id_customer %>" value="<%= customer.id_customer %>" ></button>
+            </td>
             <td><%= customer.phone %></td>
             <td><%= customer.address %></td>
             <td> 
                 <div style="float:left">
-                    <!--<a href="/customers/edit/<%= customer.id_customer %>">Edit</a> &nbsp;-->
-                    <button class="edit" onclick="alerta(this)" id="editar<%= customer.id_customer %>" value="<%= customer.id_customer %>" > Ver cliente</button>
                     <button class="order" onclick="alerta(this)" id="<%= customer.id_customer %>" value="<%= customer.id_customer %>" > Ver pedidos</button>
                 </div>
             </td>
@@ -70,46 +68,51 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
     <% }%> 
 </table>
 
+<input type="hidden" id="idseller" value="<%= id_seller %>" />
  <script>
 // Get the modal
-var modal = document.getElementById('myModal');
-var otherModal = document.getElementById('otherModal');
+var agregarCliente = document.getElementById('agregarClienteNuevo');
+var editarCliente = document.getElementById('editarClienteExistente');
+var verPedidos = document.getElementById('verPedidos');
 
 // Get the button that opens the modal
 var agregar = document.getElementById("nuevo");
 var editar = document.getElementById("editar");
 
+
 // When the user clicks the button, open the modal 
 agregar.onclick = function() {
-    modal.style.display = "block";
+    agregarCliente.style.display = "block";
 }
 
 function alerta(cliente) {
-
     if (cliente.className === 'edit'){
         var iframe = document.getElementById('frameEditar')
         iframe.src = "/customers/edit/" + cliente.value;
-        otherModal.style.display = "block"
+        editarCliente.style.display = "block"
     } else if (cliente.className === 'order'){
         var iframe = document.getElementById('framePedidos')
-        iframe.src = "/orders/" + cliente.value;
-        anotherModal.style.display = "block"
+        iframe.src = "/orders/" + cliente.value + "/" + document.getElementById('oficina').className + "/" + document.getElementById('idseller').value;
+        verPedidos.style.display = "block"
     }
 }
 
-function cerrarDialogo(){
-    anotherModal.style.display = "none"
-    otherModal.style.display = "none";
-    modal.style.display = "none";
+function cerrarDialogos(){
+    verPedidos.style.display = "none"
+    editarCliente.style.display = "none";
+    agregarCliente.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (event.target == agregarCliente) {
+        agregarCliente.style.display = "none";
     }
-    if (event.target == otherModal) {
-        otherModal.style.display = "none";
+    if (event.target == editarCliente) {
+        editarCliente.style.display = "none";
+    }
+    if (event.target == verPedidos) {
+        verPedidos.style.display = "none";
     }
 } 
 </script>

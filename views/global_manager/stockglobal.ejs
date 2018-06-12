@@ -62,16 +62,6 @@
         agregarVSG.style.display = "block";
     }
 
-    window.onclick = function(event) {
-        if (event.target == agregarVSG) {
-            agregarVSG.style.display = "none";
-        }
-    }
-
-    function cerrarDialogo(){
-        agregarVSG.style.display = "none";
-        editarVSG.style.display = "none";
-    }
 
     function editarVehiculo(vehiculo){
        document.getElementById('eVSG').src = "/vehicles/edit/" + vehiculo.value;

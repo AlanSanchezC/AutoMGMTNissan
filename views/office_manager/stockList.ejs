@@ -23,39 +23,35 @@
     <iframe src="" id="frameAgregarLote" width="500px;" height="230px;"></iframe>
   </div>
 </div>
+
 <center>
-    <% if (data) { %>
-        <table width='80%' border=0>
-            <tr style='text-align:left; background-color:#CCC'>  
-                <th>Nombre</th>
-                <th>Detalles</th>
-                <th>Costo</th>
-                <th>Cantidad en sucursal</th>
-            </tr>
-            <% data.forEach(function(stock){ %>
-                <tr>
-                    <td><%= stock.model %></td>
-                    <td><%= stock.details%></td>
-                    <td><%= stock.cost %></td>
-                    <td><%= stock.cant %></td>
-                </tr>
-            <% }) %>
+
+<% if (stock.length > 0) { %>
+<table width='80%' border=0>
+    <tr style='text-align:left; background-color:#CCC'>
         
-        <br><br>
-                <% if (cmd) { %>
-                    Agregar lote de 
-                    <select id="agregarAutoSucursal" onchange="agregarLoteASucursal(this)">
-                        <% if (stockGlobal) { %>
-                            <% stockGlobal.forEach(function(auto){ %>
-                                <option value="<%= auto.id_vehicle%>/<%= auto.cantidadTotal %>/<%= data[0].id_office %>" id="<%= auto.id_vehicle %>"><%= auto.model %> </option>
-                            <% }) %>
-                        <% } %> 
-                    </select>
-                <% } %>
+        <th>Nombre</th>
+        <th>Detalles</th>
+        <th>Costo</th>
+        <th>Cantidad en sucursal</th>
+    </tr>
+
+
+    <% stock.forEach(function(stock){ %>
+        <tr>
+            
+            <td><%= stock.model %></td>
+            <td><%= stock.details%></td>
+            <td><%= stock.cost %></td>
+            <td><%= stock.cantidadStock %></td>
+        </tr>
+    <% }) %>
         </table>
     <% } else { %>
-        <h4> Sin vehículos disponibles </h4>
-    <% } %> 
+        </table>
+        <h3>Sin vehículos disponibles</h3>
+    <% }%> 
+
 <script>
 // Get the modal
 var editarVehicStock = document.getElementById('editarVehiculoStock');
@@ -74,10 +70,6 @@ function editarVehiculo(vehiculoStock) {
     editarVehicStock.style.display = "block"
 }
 
-function agregarLoteASucursal(vehiculo){
-    document.getElementById('frameAgregarLote').src = "/stocks/add/" + vehiculo.value;
-    agregarLoteSuc.style.display = "block"
-}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {

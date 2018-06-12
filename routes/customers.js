@@ -346,9 +346,7 @@ router.delete('/delete/(:id_customer)', function(req, res, next) {
                 req.flash('error', err)
                 // redirect to users list page
             } else {
-                req.flash('success', 'Cliente eliminado exitosamente!')
-                // redirect to customer list page
-                req.flash('back') 
+                res.render('layouts/deleted')
             }
         })
     })

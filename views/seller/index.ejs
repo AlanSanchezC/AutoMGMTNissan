@@ -8,16 +8,61 @@
 <% if (sellerfullname) { %>
 <p align="right"> 
     Hola <%= sellerfullname %><br>
+    <i><%= nombre_sucursal %></i><br>
     <a href="/"><input type="button" value="Cerrar sesión" /></a>
     </p>
 <% } %>
 <center>
-<div id="catalogoClientes">
-  <%- include ../customer/list.ejs %>
-</div>
-<br>
-<div id="catalogoVehiculos" >
-  <%- include ../vehicle/list.ejs %>
-</div>
+
+<%- include ../customer/list.ejs %>
+
+<br><br>
+<h3> Catálogo de vehículos </h3>
+
+<iframe src="" width="1000px;" id="stockSucursalActual" onload="resizeIframe(this)"></iframe>
+<br><br>
+
+<% if (sucursales) { %>
+
+		Consultar en
+
+		<select onchange="stockDeSucursal(this)">
+		    <option value="none">-- Sucursal --</option>
+		    <%	sucursales.forEach(function(sucursal){ %>
+		    	<% if (sucursal.name_office != nombre_sucursal) { %>
+			    <option value="<%= sucursal.id_office %>"> 
+			    	<%= sucursal.name_office %>
+			    </option>
+			    <% } %>
+		    <% }) %>
+		</select>
+
+<% } %> 
+
+<iframe src="" width="1000px;"  id="stockSucursalesV" onload="resizeIframe(this)" style="display: none;"></iframe>
+
+
+<input type="hidden" id="oficina" class="<%= id_office %>">
+<script>
+function stockDeSucursal(sucursal){
+	var stock = document.getElementById('stockSucursalesV')
+	
+	if (sucursal.value != "none") {
+		stock.src = "/stocks/" +sucursal.value
+		stock.style.display = "block";
+	} else {
+		stock.style.display = "none";
+	}
+}
+
+window.onload = function(){
+	document.getElementById('stockSucursalActual').src = "/stocks/" + document.getElementById('oficina').className;
+	
+}
+
+function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+ }
+</script>
 
 <%- include ../layouts/footer.ejs %>

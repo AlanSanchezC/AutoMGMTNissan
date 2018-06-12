@@ -2,37 +2,58 @@
 
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
-<button> Nueva orden </button>
 
-<h3> Historial </h3>
+<form action="/orders/a/add/<%= id_office %>/<%= id_customer%>/<%= id_seller%>" method="get">
+    <input type="submit" value="Nuevo pedido " />
+</form>
+
+<% function checkOrder(id_order) { %>
+<%    return id_order >= 18; %>
+<% } %>
 
 <% if (data) { %>
+<h3> <%= data[0].name %></h3><br>
+Estado de orden: <%= data[0].payment_status %><br>
+Fecha de emisión: <%= data[0].date_at %><br>
+Total a pagar: <%= data[0].amount %> <br>
+Restante total: <%= data[0].rest_amount %><br><br>
+<% if (data[0].rest_amount === 0){ %>
+   <h4> ¡Pagado! </h4>
+<% } else { %>
+    <button  style="float: right" class="<%= data[0].id_order %>/1" value="Agregar pago" onclick="cambio(this)"> Agregar pago</button>
+<% } %>  
 
-<!-- Diferenciar múltliples id_order-->
-<table width="100%" border="0" >
-    <tr style='text-align:left; background-color:#CCC; font-weight: bold;'> 
-        <td>Vehículo</td>
-        <td>Fecha</td>
-        <td>A pagar</td>
-        <td>Depósitos</td>
-        <td>Restante </td>
-        <td>Estado de vehículo</td>
-    </tr>
-    <% data.forEach(function(order){ %>  
-    <tr> 
-        <td> <%= order.model %> </td>
-        <td> <%= order.date_at %></td>
-        <td> <%= order.amount %> </td>
-        <td> <%= order.deposit %> </td>
-        <td> <%= order.rest_amount %> </td>
-        <td> <%= order.payment_status %> </td>
-    </tr>
+<% var orden = data[0].id_order; %>
 
-    <% }) %>
-    </table>
-    <% } else { %>
-        <h4> Sin ordenes </h4>
-    <% }%>
-</table>
+<% for(i = 0; i < data.length-1; i ++) { %>
+    <% if (data[i].id_order != orden) { %>
+        <% orden = data[i].id_order %>
 
+        <h3> <%= data[i].name %></h3><br>
+        Estado de orden: <%= data[i].payment_status %><br>
+        Fecha de emisión: <%= data[i].date_at %><br>
+        Total a pagar: <%= data[i].amount %> <br>
+        Restante total: <%= data[i].rest_amount %><br><br>
+        <% if (data[i].rest_amount === 0){ %>
+                <h4> ¡Pagado! </h4>
+        <% } else { %>
+            <button  style="float: right" class="<%= data[i].id_order %>/2" value="Agregar pago" onclick="cambio(this)"> Agregar pago</button>
+        <% } %>  
+    <% }  %>
+    Depósito por: <%= data[i].deposit_amount %> <br>
+<% } %>
+
+<form action="" method="get" id="formPago">
+</form>
+    
+<% } else { %>
+    <h4> Sin órdenes </h4>
+<% }%>
+
+<script>
+    function cambio(orden){
+        document.getElementById('formPago').action = "/payments/p/add/" + orden.className;
+        document.forms["formPago"].submit();
+    }
+</script>
 <%- include ../layouts/footer.ejs %>

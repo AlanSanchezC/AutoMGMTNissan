@@ -7,8 +7,8 @@
     Hola <%= officemanfullname %><br>
     <a href="/"><input type="button" value="Cerrar sesión" /></a>
     </p>
+<% } else { %>
+	<center> <h3> Aún no estás asignado a una sucursal </h3>
 <% } %>
-
-<%- include ../stock/list.ejs %>
 
 <%-include ../layouts/footer.ejs %>

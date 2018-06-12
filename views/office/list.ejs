@@ -13,27 +13,11 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
-<div id="nuevaSucursal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close" onclick="cerrarDialogo()">&times;</span>
-    <iframe src="/offices/add/<%= id_global_manager %>/<%= state %>" id="frameNuevo" width="450px;" height="500px;"></iframe>
-  </div>
-</div>
-
 <div id="editarSucursal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" onclick="cerrarDialogo()">&times;</span>
     <iframe src="" id="frameEditarSucursal" width="450px;" height="500px;"></iframe>
-  </div>
-</div>
-
-<div id="nuevoGerente" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close" onclick="cerrarDialogo()">&times;</span>
-    <iframe src="offices_managers/add/<%= id_global_manager %>" id="frameNuevoGerente" width="450px;" height="500px;"></iframe>
   </div>
 </div>
 
@@ -90,7 +74,7 @@ var nuevaS = document.getElementById("nuevaSuc");
 var nuevoG = document.getElementById("nuevoGer");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("close");
 
 // When the user clicks the button, open the modal 
 nuevaS.onclick = function() {
@@ -103,8 +87,6 @@ nuevoG.onclick = function(){
 
 function cerrarDialogo(){
     editarSucursal.style.display = "none";
-    nuevaSucursal.style.display = "none";
-    nuevoGerente.style.display = "none";
     editarGerente.style.display = "none";
 }
 
@@ -118,22 +100,6 @@ function alerta(sucursal) {
         var iframe = document.getElementById('frameEditarGerente')
         iframe.src = "/offices_managers/edit/" + sucursal.value;
         editarGerente.style.display = "block"
-    }
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == nuevaSucursal) {
-        nuevaSucursal.style.display = "none";
-    }
-    if (event.target == editarSucursal) {
-        editarSucursal.style.display = "none";
-    }
-    if (event.target == nuevoGerente) {
-        nuevoGerente.style.display = "none";
-    }
-    if (event.target == editarGerente) {
-        editarGerente.style.display = "none";
     }
 }
 </script>

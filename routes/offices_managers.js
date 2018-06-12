@@ -8,7 +8,7 @@ const VIEWS = path.join(__dirname, 'views');
 // SHOW LIST 
 router.get('/(:id_manager)', function(req, res, next) {
     req.getConnection(function(error, conn) {
-        ////// BAD
+        
         conn.query("SELECT offices_managers.id_office_manager as idOfficeManager, offices_managers.name as nameOM, offices_managers.lastname as lastnameOM " + 
                           "offices.*, globals_managers.id_global_manager " +
                     "FROM offices " +

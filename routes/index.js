@@ -45,7 +45,6 @@ router.post('/session', function(req, res, next){
                                             "INNER JOIN offices_managers ON sellers.id_office_manager = offices_managers.id_office_manager " +
                                             "INNER JOIN offices ON offices_managers.id_office_manager = offices.id_office_manager " +
                                             "WHERE sellers.id_seller = ? ;", rows[0].idseller, function(err3, rows3, fields3){
-                                    
                                     if (rows.length === 0){
                                         conn.query("SELECT sellers.name, sellers.lastname, sellers.id_seller, sellers.id_office_manager from sellers WHERE sellers.id_user = '" + u +"';", function (err4, rows4, fields4){
                                             res.render('seller/index', {
@@ -102,6 +101,7 @@ router.post('/session', function(req, res, next){
                                             "INNER JOIN offices ON stocks.id_office = offices.id_office "+
                                             "WHERE stocks.id_office = ? " + 
                                             "GROUP BY vehicles_models.id_vehicle_model "+
+                                            "HAVING cantidadStock > 0 "+
                                             "ORDER BY cantidadStock DESC, vehicles_models.model ;", rows[0].id_office ,function(err2, rows2, fields) {
                                     if (err2 || rows2 === 0) {
                                         res.render('office_manager/index', {
@@ -109,7 +109,6 @@ router.post('/session', function(req, res, next){
                                             stock: '',
                                             officemanfullname: rows[0].name + " " + rows[0].lastname,
                                             id_office_manager: rows[0].id_office_manager,
-                                            cmd: 'o'
                                         })
                                     } else {
                                         res.render('office_manager/index', {
@@ -117,7 +116,6 @@ router.post('/session', function(req, res, next){
                                             stock: rows2,
                                             officemanfullname: rows[0].name + " " + rows[0].lastname,
                                             id_office_manager: rows[0].id_office_manager,
-                                            cmd: 'o'
                                         })
                                     }
                                 })

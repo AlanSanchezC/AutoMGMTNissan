@@ -50,7 +50,6 @@ router.get('/(:id_customer)/(:id_office)/(:id_seller)', function(req, res, next)
  
 // SHOW ADD x FORM 
 router.get('/a/add/(:id_office)/(:id_customer)/(:id_seller)', function(req, res, next){  
-    
     req.getConnection(function(error, conn) {
         conn.query("SELECT vehicles.id_vehicle, vehicles.name, vehicles_models.cost " +
                     "FROM stocks "+
@@ -64,7 +63,7 @@ router.get('/a/add/(:id_office)/(:id_customer)/(:id_seller)', function(req, res,
                 vehiculos: rows,
                 id_customer: req.params.id_customer,
                 id_seller: req.params.id_seller,
-                id_office: req.id_office
+                id_office: req.params.id_office
             })
         })
     }) 
@@ -112,144 +111,10 @@ router.post('/b/add/(:id_vehicle)/(:id_customer)/(:id_seller)/(:id_office)', fun
                     conn.query("UPDATE stocks SET cantidad = cantidad-1 " + 
                                 "WHERE id_vehicle = '"+ req.params.id_vehicle + "' AND id_office = '"+ req.params.id_office +"' " + 
                                 "AND cantidad > 0 LIMIT 1;", function(err4, result4){
-                        console.log(result4)
                         res.render('office/success')
                     })
                 })
             })
-        })
-    })
-})
- 
-// SHOW EDIT FORM
-router.get('/edit/(:id_order)', function(req, res, next){
-    req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM globals_managers WHERE id_order = ' + req.params.id_order, function(err, rows, fields) {
-            if(err) throw err
-            
-            // if user not found
-            if (rows.length <= 0) {
-                req.flash('error', 'User not found with id = ' + req.params.id_order)
-                res.redirect('/order')
-            }
-            else { // if user found
-                res.render("order/edit", {
-                    title: 'Edit Global manager', 
-                    id_order: rows[0].id_order,
-                    name: rows[0].name,
-                    lastname: rows[0].lastname,
-                    phone: rows[0].phone,
-                    address: rows[0].address,
-                    city: rows[0].city,
-                    state: rows[0].state,
-                    postal_code: rows[0].postal_code,
-                    country: rows[0].country
-                })
-            }            
-        })
-    })
-})
- 
-// EDIT x POST ACTION
-router.put('/edit/(:id_order)', function(req, res, next) {
-    req.assert('name', 'Name is required').notEmpty()           //Validate name
-    req.assert('lastname', 'Lastname is required').notEmpty()   //Validate lastname
-    req.assert('phone', 'A valid phone is required').notEmpty()   //Validate
-    req.assert('address', 'A valid address is required').notEmpty()   //Validate
-    req.assert('city', 'A valid city is required').notEmpty()   //Validate city
-    req.assert('state', 'A valid state is required').notEmpty()   //Validate state
-    req.assert('postal_code', 'A valid postal code is required').notEmpty()   //Validate
-    req.assert('country', 'A valid country is required').notEmpty()   //Validate
-
-    var errors = req.validationErrors()
-    
-    if( !errors ) {   //No errors were found.  Passed Validation!
-        
-        var order = {
-            name: req.sanitize('name').escape().trim(),
-            lastname: req.sanitize('lastname').escape().trim(),
-            phone: req.sanitize('phone').escape().trim(),
-            address: req.sanitize('address').escape().trim(),
-            city: req.sanitize('city').escape().trim(),
-            state: req.sanitize('state').escape().trim(),
-            postal_code: req.sanitize('postal_code').escape().trim(),
-            country: req.sanitize('country').escape().trim()
-        }
-        
-        req.getConnection(function(error, conn) {
-            conn.query('UPDATE globals_managers SET ? WHERE id_order = ' + req.params.id_order, order, function(err, result) {
-                //if(err) throw err
-                if (err) {
-                    req.flash('error', err)
-                    
-                    res.render('order/edit', {
-                        title: 'Edit Global manager',
-                        name: req.body.name,
-                        lastname: req.body.lastname,
-                        phone: req.body.phone,
-                        address: req.body.address,
-                        city: req.body.city,
-                        state: req.body.state,
-                        postal_code: req.body.postal_code,
-                        country: req.body.country
-                    })
-                } else {
-                    req.flash('success', 'Data updated successfully!')
-                    
-                    res.render('order/edit', {
-                        title: 'Edit Global manager',
-                        id_order: req.params.id_order,
-                        name: req.body.name,
-                        lastname: req.body.lastname,
-                        phone: req.body.phone,
-                        address: req.body.address,
-                        city: req.body.city,
-                        state: req.body.state,
-                        postal_code: req.body.postal_code,
-                        country: req.body.country
-                    })
-                }
-            })
-        })
-    }
-    else {   //Display errors to gl
-        var error_msg = ''
-        errors.forEach(function(error) {
-            error_msg += error.msg + '<br>'
-        })
-        req.flash('error', error_msg)
-        
-        res.render('order/edit', { 
-            title: 'Edit Global manager',            
-            id_order: req.params.id_order, 
-            name: req.body.name,
-            lastname: req.body.lastname,
-            phone: req.body.phone,
-            address: req.body.address,
-            city: req.body.city,
-            state: req.body.state,
-            postal_code: req.body.postal_code,
-            country: req.body.country
-        })
-    }
-})
- 
-// DELETE USER
-router.delete('/delete/(:id_order)', function(req, res, next) {
-    var gl = { id: req.params.id }
-    
-    req.getConnection(function(error, conn) {
-        conn.query('DELETE FROM globals_managers WHERE id_order = ' + req.params.id_order, gl, function(err, result) {
-            //if(err) throw err
-            if (err) {
-                req.flash('error', err)
-                // redirect to users list page
-                res.redirect('/orders')
-            } else {
-                req.flash('success', 'global manager deleted successfully! id = ' + req.params.id_order)
-                // redirect to gl list page
-                res.redirect('/orders')
-            }
         })
     })
 })

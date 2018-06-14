@@ -1,4 +1,4 @@
-<%- include ../layouts/header.ejs %>
+<h1> <%= title %> </h1>
 
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
@@ -6,42 +6,30 @@
 <form action="/orders/a/add/<%= id_office %>/<%= id_customer%>/<%= id_seller%>" method="get">
     <input type="submit" value="Nuevo pedido " />
 </form>
-
-<% function checkOrder(id_order) { %>
-<%    return id_order >= 18; %>
-<% } %>
+<br><br>
 
 <% if (data) { %>
-<h3> <%= data[0].name %></h3><br>
-Estado de orden: <%= data[0].payment_status %><br>
-Fecha de emisión: <%= data[0].date_at %><br>
-Total a pagar: <%= data[0].amount %> <br>
-Restante total: <%= data[0].rest_amount %><br><br>
-<% if (data[0].rest_amount === 0){ %>
-   <h4> ¡Pagado! </h4>
-<% } else { %>
-    <button  style="float: right" class="<%= data[0].id_order %>/1" value="Agregar pago" onclick="cambio(this)"> Agregar pago</button>
-<% } %>  
 
-<% var orden = data[0].id_order; %>
+<% var listadoNuevo = true; %>
+<% var n = data[0].id_order; %>
 
-<% for(i = 0; i < data.length-1; i ++) { %>
-    <% if (data[i].id_order != orden) { %>
-        <% orden = data[i].id_order %>
+    <% data.forEach(function(orden){ %>
+            <h3> <%= orden.name %></h3><br>
+            Estado de orden: <%= orden.payment_status %><br>
+            Fecha de emisión: <%= orden.date_at %><br>
+            Total a pagar: <%= orden.amount %> <br>
+            Restante total: <%= orden.rest_amount %><br><br>
+            <%= orden.deposit_amount %> <br>
 
-        <h3> <%= data[i].name %></h3><br>
-        Estado de orden: <%= data[i].payment_status %><br>
-        Fecha de emisión: <%= data[i].date_at %><br>
-        Total a pagar: <%= data[i].amount %> <br>
-        Restante total: <%= data[i].rest_amount %><br><br>
-        <% if (data[i].rest_amount === 0){ %>
-                <h4> ¡Pagado! </h4>
-        <% } else { %>
-            <button  style="float: right" class="<%= data[i].id_order %>/2" value="Agregar pago" onclick="cambio(this)"> Agregar pago</button>
-        <% } %>  
-    <% }  %>
-    Depósito por: <%= data[i].deposit_amount %> <br>
-<% } %>
+            
+                <% n = orden.id_order; %>
+                <% if (orden.rest_amount === 0){ %>
+                        <h4> ¡Pagado! </h4>
+                <% } else { %>
+                    <button  style="float: right" class="<%= orden.id_order %>/2" value="Agregar pago" onclick="cambio(this)"> Agregar pago</button>
+                <% } %> 
+     
+    <% }) %>
 
 <form action="" method="get" id="formPago">
 </form>

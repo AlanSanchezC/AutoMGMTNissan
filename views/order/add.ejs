@@ -50,7 +50,11 @@ function elegir(vehiculo){
     else {
         document.getElementById('datosPedido').style.display = "block";
         document.getElementById('costo').value = vehiculo.value.split('|')[1];
-        document.getElementById('form1').action = "/orders/b/add/" + vehiculo.value.split('|')[0] + "/" + document.getElementById('idcustomer').value + "/" + document.getElementById('idseller').value + "/" + document.getElementById('idoffice');
+        document.getElementById('form1').action = "/orders/b/add/" + 
+                                                vehiculo.value.split('|')[0] + "/" + 
+                                                document.getElementById('idcustomer').value + "/" + 
+                                                document.getElementById('idseller').value + "/" + 
+                                                document.getElementById('idoffice').value;
     }
 }
 </script>

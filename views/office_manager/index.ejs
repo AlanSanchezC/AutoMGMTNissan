@@ -1,14 +1,20 @@
 <%- include ../layouts/header.ejs %>
-
+<body background="/img/nissanrojo1.jpg">
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 <% if (officemanfullname) { %>
-<p align="right"> 
-    Hola <%= officemanfullname %><br>
-    <a href="/"><input type="button" value="Cerrar sesión" /></a>
-    </p>
+    <label class="bienvenida"> Hola, <%= officemanfullname %></label><br>
+    <a href="/"><input type="button" class="logout" value="Cerrar sesión" /></a>
+    <br><br>
+    <%- include stockList.ejs %>
 <% } else { %>
 	<center> <h3> Aún no estás asignado a una sucursal </h3>
 <% } %>
 
+
+<script>
+window.onload = function() {
+    document.body.style.background = "url('/img/nissanrojo2.jpg') center center fixed";
+}
+</script>
 <%-include ../layouts/footer.ejs %>

@@ -29,34 +29,23 @@ including header content which is common for all pages
   </div>
 </div>
 
-<table width='90%' border=0>
+<table width='50%' class="lista" border=0>
  
-    <tr style='text-align:left; background-color:#CCC'>
-        <th>Nombre de sucursal</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-        <th>Ubicación</th>
-        <th>Gerente</th>
-    </tr>
-    
     <% if (data) { %>
     <% data.forEach(function(office){ %>
         <tr>
-            <td><%= office.name_office %></td>
-            <td><%= office.Ophone %></td>
-            <td><%= office.Oaddress %></td>
-            <td><%= office.Ocity + ", " + office.Ostate%></td>
-            <td>
-                <%= office.name + " " + office.lastname %>
-                <button class="editManager" onclick="alerta(this)" id="editMan<%= office.id_office_manager %>" value="<%= office.id_office_manager %>" > </button>
-            </td>
-            <td>
-                <div style="float:left">
-                    <button class="editOffice" onclick="alerta(this)" id="editOffice<%= office.id_office %>" value="<%= office.id_office %>" > Ver detalles</button>
-                    
-                </div>
+            <td colspan="2">
+                <label class="nombrePrincipal"><%= office.name_office %></label>
+                <button class="editOffice" onclick="alerta(this)" id="editOffice<%= office.id_office %>" value="<%= office.id_office %>" > Ver detalles</button><br>
             </td>
         </tr>
+        <tr><td style="line-height: 25px; font-size: 14px;">
+                Dirección: <%= office.Oaddress %><br>
+                Télefono oficina: <%= office.Ophone %><br>
+                Gerente: <%= office.name + " " + office.lastname %>
+                <button class="editManager" onclick="alerta(this)" id="editMan<%= office.id_office_manager %>" value="<%= office.id_office_manager %>" > </button>
+        </td></tr>
+        <tr><td>&nbsp;</td></tr>
     <% }) %>
     <% } %>
  

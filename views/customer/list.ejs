@@ -30,7 +30,7 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
 </div>
 
 <h3> Catálogo de clientes </h3>
-<button id="nuevo"> Agregar cliente</button>
+<button class="agregar" id="nuevo"> Agregar cliente</button>
 <br><br>
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
@@ -43,25 +43,21 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
 
 
 <% if (data) { %>
-<table width='70%' border=0>
-    <tr style='text-align:left; background-color:#CCC'>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-    </tr>
+<table width='50%' class="lista" border=0>
     <% data.forEach(function(customer){ %>
         <tr>
-            <td><%= customer.name + " " + customer.lastname%>
+            
+
+            <td width="100%"><label class="nombrePrincipal"><%= customer.name + " " + customer.lastname%> </label>
                  <button class="edit" onclick="alerta(this)" id="editar<%= customer.id_customer %>" value="<%= customer.id_customer %>" ></button>
-            </td>
-            <td><%= customer.phone %></td>
-            <td><%= customer.address %></td>
-            <td> 
-                <div style="float:left">
-                    <button class="order" onclick="alerta(this)" id="<%= customer.id_customer %>" value="<%= customer.id_customer %>" > Ver pedidos</button>
-                </div>
+                 <button style="float:right" class="order" onclick="alerta(this)" id="<%= customer.id_customer %>" value="<%= customer.id_customer %>" > Ver pedidos</button>
             </td>
         </tr>
+        <tr>
+            <td>Contacto: <%= customer.phone %> <br>
+                Dirección: <%= customer.address %></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
     <% }) %>
     <% } else { %>
         <h4> No hay clientes </h4>

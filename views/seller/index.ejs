@@ -7,9 +7,9 @@
 
 <% if (sellerfullname) { %>
 <p align="right"> 
-    Hola <%= sellerfullname %><br>
-    <i><%= nombre_sucursal %></i><br>
-    <a href="/"><input type="button" value="Cerrar sesión" /></a>
+    <label class="bienvenida">Hola, <%= sellerfullname %><br>
+    <i><%= nombre_sucursal %></i></label><br><br>
+    <a href="/"><input class="logout" type="button" value="Cerrar sesión" /></a>
     </p>
 <% } %>
 <center>
@@ -48,7 +48,7 @@ function stockDeSucursal(sucursal){
 	var stock = document.getElementById('stockSucursalesV')
 	
 	if (sucursal.value != "none") {
-		stock.src = "/stocks/" +sucursal.value
+		stock.src = "/stocks/" +sucursal.value+"/o"
 		stock.style.display = "block";
 	} else {
 		stock.style.display = "none";
@@ -56,8 +56,8 @@ function stockDeSucursal(sucursal){
 }
 
 window.onload = function(){
-	document.getElementById('stockSucursalActual').src = "/stocks/" + document.getElementById('oficina').className;
-	
+	document.body.style.background = "url('/img/nissancool.jpg') center center fixed";
+	document.getElementById('stockSucursalActual').src = "/stocks/" + document.getElementById('oficina').className + "/o";  
 }
 
 function resizeIframe(obj) {

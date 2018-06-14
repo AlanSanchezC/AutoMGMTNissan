@@ -25,24 +25,20 @@
 </div>
 <center>
     <% if (data) { %>
-        <table width='80%' border=0>
-            <tr style='text-align:left; background-color:#CCC'>  
-                <th>Nombre</th>
-                <th>Detalles</th>
-                <th>Costo</th>
-                <th>Cantidad en sucursal</th>
-            </tr>
+    <table width='80%' border=0 class="listaSucursales">
             <% data.forEach(function(stock){ %>
                 <tr>
-                    <td><%= stock.model %></td>
-                    <td><%= stock.details%></td>
-                    <td><%= stock.cost %></td>
-                    <td><%= stock.cant %></td>
+                    <td width="60%"><label class="nombrePrincipal"> <%= stock.model %> </label> </td>
+                    <td><label class="cantidadVehiculos"> Disponibles: <%= stock.cant %></label></td>
                 </tr>
+                <tr> <td>  Descripción: <%= stock.details%> </td> 
+                <tr> <td> <label class="costo"> Costo: <%= stock.cost %> </label> </td></tr>
+                <tr><td>&nbsp;</td></tr>
             <% }) %>
-        
+            </tr>
+        </table>
         <br><br>
-                <% if (cmd) { %>
+                <% if (cmd == 'g') { %>
                     Agregar lote de 
                     <select id="agregarAutoSucursal" onchange="agregarLoteASucursal(this)">
                         <% if (stockGlobal) { %>
@@ -52,7 +48,7 @@
                         <% } %> 
                     </select>
                 <% } %>
-        </table>
+        
     <% } else { %>
         <h4> Sin vehículos disponibles </h4>
     <% } %> 

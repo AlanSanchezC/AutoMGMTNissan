@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
+
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -27,31 +28,22 @@
 <center>
 
 <% if (stock.length > 0) { %>
-<table width='80%' border=0>
-    <tr style='text-align:left; background-color:#CCC'>
+    <table width="55%" class="lista" >
         
-        <th>Nombre</th>
-        <th>Detalles</th>
-        <th>Costo</th>
-        <th>Cantidad en sucursal</th>
-    </tr>
-
-
-    <% stock.forEach(function(stock){ %>
-        <tr>
-            
-            <td><%= stock.model %></td>
-            <td><%= stock.details%></td>
-            <td><%= stock.cost %></td>
-            <td><%= stock.cantidadStock %></td>
-        </tr>
-    <% }) %>
-        </table>
-    <% } else { %>
-        </table>
-        <h3>Sin vehículos disponibles</h3>
-    <% }%> 
-
+        <% stock.forEach(function(stock){ %>
+            <tr>
+                <td width="60%"> <label class="nombrePrincipal"><%= stock.model %></label> </td>
+                <td><label class="cantidadVehiculos"> Disponibles: <%= stock.cantidadStock %></label></td>
+            </tr>
+            <tr><td>Descripción: <%=stock.details%> </td></tr>
+            <tr><td><label class="costo">Costo: $ <%= stock.cost %> </label></td></tr>
+            <tr><td>&nbsp;</td></tr>
+        <% }) %>
+        
+    </table>
+<% } else { %>
+    <h3>Sin vehículos disponibles</h3>
+<% }%> 
 <script>
 // Get the modal
 var editarVehicStock = document.getElementById('editarVehiculoStock');

@@ -1,13 +1,13 @@
 <%- include ../layouts/header.ejs %>
-
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 <% if (globalmanfullname) { %>
 <p align="right"> 
-    Hola <%= globalmanfullname %><br>
-    <a href="/"><input type="button" value="Cerrar sesión" /></a>
+    <label class="bienvenida">Hola, <%= globalmanfullname %></label><br>
+    <a href="/"><input type="button" class="logout" value="Cerrar sesión" /></a>
     </p>
 <% } %>
+<br>
 <center>
 
 <div id="nuevaSucursal" class="modal">
@@ -28,8 +28,8 @@
 
 
 <h3> Sucursales </h3>
-<button id="nuevaSuc"> Agregar sucursal</button>
-<button id="nuevoGer"> Agregar gerente </button>
+<button class="agregar" id="nuevaSuc"> Agregar sucursal</button>
+<button class="agregar" id="nuevoGer"> Agregar gerente </button>
 <br><br>
 <%- include ../office/list.ejs %>
 <br><br>
@@ -49,12 +49,18 @@ Ver stock de
 </select>
 <% } %>
 <br><br>
-<iframe id="frameStockSucursal" width="900px;" height="500px;" frameBorder="0" style="display: none;"></iframe>
+<iframe id="frameStockSucursal" width="900px;" height="500px;" frameBorder="0" style="display: none;">
+    
+</iframe>
 
 <br><br>
 
 
 <script>
+window.onload = function() {
+    document.body.style.background = "url('img/nissandesert.jpg') no-repeat center center fixed";
+}
+
 function cerrarDialogo(dialogo){
     editarSucursal.style.display = "none";
     nuevaSucursal.style.display = "none";
@@ -84,8 +90,10 @@ window.onclick = function(event) {
 function cambio(){
     var id_office = document.getElementById("stockSucursal").value;
     document.getElementById('frameStockSucursal').style.display = "block";
-    document.getElementById('frameStockSucursal').src = "/stocks/" + id_office;
+    document.getElementById('frameStockSucursal').src = "/stocks/" + id_office + "/g";
 }
+
+
 </script>
 
 <%- include ../layouts/footer.ejs%>

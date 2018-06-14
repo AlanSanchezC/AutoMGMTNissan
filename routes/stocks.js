@@ -9,7 +9,7 @@ const TITLE = "AutoMGMT Nissan®";
 
 
 // SHOW LIST OF USERS
-router.get('/(:id_office)', function(req, res, next) {
+router.get('/(:id_office)/(:cmd)', function(req, res, next) {
     req.getConnection(function(error, conn) {
         conn.query("SELECT sum(stocks.cantidad) as cant, offices.*, vehicles.id_vehicle, vehicles.id_vehicle_model, vehicles_models.* " +
                     "FROM stocks " +
@@ -31,7 +31,7 @@ router.get('/(:id_office)', function(req, res, next) {
                         title: 'Customer List', 
                         data: '',
                         stockGlobal: rows2,
-                        cmd: ''
+                        cmd: req.params.cmd
                     })
                 } else {
                     res.render('stock/list', {
@@ -40,7 +40,7 @@ router.get('/(:id_office)', function(req, res, next) {
                         stockGlobal: rows2,
                         id_stock: rows[0].id_stock,
                         id_vehicle_model: rows[0].id_vehicle_model,
-                        cmd: ''
+                        cmd: req.params.cmd
                     })
                 }
             })

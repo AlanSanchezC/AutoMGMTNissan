@@ -1,12 +1,17 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Raleway', sans-serif;
+    background-color: white;
+    margin:0;
 }
 
 table {
     line-height: 27px;
     overflow-wrap: break-word;}
 
-button {cursor: pointer;}
+button {
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+}
 
 td {
     font-size: 15px;
@@ -15,21 +20,30 @@ td {
 select {
     cursor: pointer;
     font-size: 16px;
-
 }
 
 
-iframe {border: 0;}
+iframe {
+    border: 0;
+}
+
+.seleccion{
+    font-family: 'Raleway', sans-serif;
+    background-color: blue;
+}
 
 .header{
     position: fixed;
-    width: 99%;
-    background-color: #f2f2f2;
+    width: 100%;
+    background-color: #fff2e6;
     z-index: 1;
+    border-bottom: 2px solid #002699;
 }
 
-
-
+#hd {
+    display: inline-block;
+    margin-bottom: 10px;
+}
 
 .logout {
     font-size: 12px;
@@ -42,6 +56,8 @@ iframe {border: 0;}
     cursor: pointer;
     border-radius: 5px;
     float: right;
+    font-weight: bold;
+    font-family: 'Raleway', sans-serif;
 }
 
 .agregar{
@@ -81,6 +97,7 @@ input[type=text], input[type=password]{
     padding: 5px 10px;
     margin: 8px 0;
     box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
 }
 
 input[type="submit"]{
@@ -92,66 +109,67 @@ input[type="submit"]{
     cursor: pointer;
     border: 0;
     border-radius: 8px;
+    background-color: lightgrey;
 }
 
-
-
-.fondoLogin {
-    background: url(/img/nissanrojo1.jpg) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    font-size: 18px;
-    
-}
 
 .login {
-    background-color: white;
+    background-color: #fff2e6;
     width:45%;
     border-radius: 5px;
-    opacity: 0.95;
     border: 1px solid;
-
 }
 
+
 .lista {
-    background-color: white ;
     opacity: 0.97;
-    padding: 30px;
     line-height: 20px;
+    padding: 15px;
+    width: 40%;
+    text-align: left;
+    vertical-align: top;
     display: inline-block;
 }
 
 .fit{
     table-layout: fixed;
+    width: 90%;
     overflow-wrap: break-word;
 }
 
-.lista{
-    width: 30%;
-    text-align: left;
-}
-
 .listaSucursales {
-    background-color: white ;
-    opacity: 0.97;
     display: inline-block;
 }
 
+.todosLosItems {
+    width: 100%;
+}
 
+.diferenteSucursal{
+    background-color: #ccffff;
+    width: 100%;
+}
 
 
 .bienvenida{
     float: right;
-    line-height: 10px;
-
+    margin-top: 40px;
+    line-height: 18px;
 }
 
 .tituloSW {
-    font-size: 45px;
-    line-height: 0;
+    font-size: 65px;
+    line-height: 0px;
+    margin-top: 50px;
     color: #002699;
+}
+
+.loginSW {
+    font-size: 60px;
+    line-height: 80px;
+    margin-top: 80px;
+    color: #002699;
+
 }
 
 .nombrePrincipal{
@@ -190,13 +208,11 @@ input[type="submit"]{
     font-weight: bold;
 }
 
-.subtitulo{    
+.subtitulo{
     letter-spacing: 10px;
+    font-size: 40px;
     font-weight: lighter;
-    font-size: 30px;
 }
-
-
 
 
 

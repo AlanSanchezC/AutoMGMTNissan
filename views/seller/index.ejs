@@ -4,31 +4,31 @@
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 <% if (sellerfullname) { %>
-<p align="right"> 
-	<table>
-        <tr><td rowspan="2"><label style="line-height: 15px;">Hola, <%= sellerfullname %><br>
-        	 <i><%= nombre_sucursal %></i></td>
-            <td><a href="/"><input type="button" class="logout" value="Salir" /></a></td>
-        </tr>
-    </table>
-</p>
+	<div id="hd" style="float: right;"> 
+		<table>
+	        <tr><td><label class="bienvenida">Hola, <%= sellerfullname %><br>	
+	        	 <i><%= nombre_sucursal %></i><br>
+	            <a href="/"><input type="button" class="logout" value="Salir" /></a></td>
+	        </tr>
+	    </table>
+	</div>
 </div>
 <% } %>
 
 <center>
-<a style="line-height: 160px;">&nbsp;</a>
+<a style="line-height: 120px;">&nbsp;</a>
 <%- include ../customer/list.ejs %>
 <br><br><br>
 <h3 class="subtitulo"> VEHÍCULOS DE SUCURSAL </h3>
 <br><br>
 <iframe src="" width="1000px;" id="stockSucursalActual" onload="resizeIframe(this)"></iframe>
+
+<div class="diferenteSucursal">
 <br><br>
-
 <% if (sucursales) { %>
-
 		Consultar en
-
 		<select onchange="stockDeSucursal(this)">
+
 		    <option value="none">-- Sucursal --</option>
 		    <%	sucursales.forEach(function(sucursal){ %>
 		    	<% if (sucursal.name_office != nombre_sucursal) { %>
@@ -38,13 +38,15 @@
 			    <% } %>
 		    <% }) %>
 		</select>
-
+		<br><br>
 <% } %> 
 
-<iframe src="" width="1000px;"  id="stockSucursalesV" onload="resizeIframe(this)" style="display: none;"></iframe>
+<iframe src="" width="1000px;" id="stockSucursalesV" onload="resizeIframe(this)" style="display: none;"></iframe>
 
 
 <input type="hidden" id="oficina" class="<%= id_office %>">
+<br><br><br>
+</div>
 <script>
 function stockDeSucursal(sucursal){
 	var stock = document.getElementById('stockSucursalesV')

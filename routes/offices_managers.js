@@ -5,6 +5,25 @@ var router = express.Router();
 var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
+router.get('/graph/(:id_office)', function(req, res, next){
+    req.getConnection(function(error, conn) {
+        conn.query("SELECT count(*) as cantidad, vehicles.name " +
+                    "FROM offices " +
+                    "INNER JOIN offices_managers on offices.id_office_manager = offices_managers.id_office_manager " +
+                    "INNER JOIN sellers on offices_managers.id_office_manager = sellers.id_office_manager " +
+                    "INNER JOIN orders_details on sellers.id_seller = orders_details.id_seller " +
+                    "INNER join vehicles on vehicles.id_vehicle = orders_details.id_vehicle " +
+                    "WHERE offices.id_office = ? " +
+                    "GROUP BY vehicles.id_vehicle " +
+                    ";", req.params.id_office ,function(err, rows, fields){
+            console.log(rows)
+            res.render('report/localSalesRep',{
+                grafica: rows
+            })
+        })
+    })
+})
+
 // SHOW LIST 
 router.get('/(:id_manager)', function(req, res, next) {
     req.getConnection(function(error, conn) {

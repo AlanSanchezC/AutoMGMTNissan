@@ -29,7 +29,7 @@ including header content which is common for all pages
   </div>
 </div> 
     <% if (data) { %>
-    
+        <div style="width: 100%;" class="todosLosItems">
         <% data.forEach(function(office){ %>
         <div class="lista"  border=0>
             <table class="fit"> <tr><td>
@@ -43,6 +43,7 @@ including header content which is common for all pages
             </td></tr></table>
         </div>
         <% }) %>
+        </div>
     <% } %>
  
  <script>

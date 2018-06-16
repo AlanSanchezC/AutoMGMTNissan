@@ -2,13 +2,14 @@
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 <% if (globalmanfullname) { %>
-<p align="right"> 
-    <table >
-        <tr><td><label class="bienvenida">Hola, <%= globalmanfullname %></label></td>
-            <td><a href="/"><input type="button" class="logout" value="Salir" /></a></td>
-        </tr>
+    <div id="hd" style="float: right;"> 
+        <table>
+            <tr><td><label class="bienvenida">Hola, <%= globalmanfullname %></label><br>
+                <a href="/"><input type="button" class="logout" value="Salir" /></a></td>
+            </tr>
     </table>
-</p>
+    </div>
+</div>
 <% } %>
 </div>
 <br>
@@ -44,13 +45,13 @@
 <% if (data) { %>
 
 Ver stock de 
+    <select class="seleccion" id="stockSucursal" onchange="cambio()">
+    	<option> -- Selecciona una sucursal --</option>
+    <% data.forEach(function(sucursal) { %>
+    	<option value="<%= sucursal.id_office %>"><%= sucursal.name_office %></option>	
+    <% }) %>
+    </select>
 
-<select id="stockSucursal" onchange="cambio()">
-	<option> -- Selecciona una sucursal --</option>
-<% data.forEach(function(sucursal) { %>
-	<option value="<%= sucursal.id_office %>"><%= sucursal.name_office %></option>	
-<% }) %>
-</select>
 <% } %>
 <br><br>
 <iframe id="frameStockSucursal" width="900px;" onload="resizeIframe(this)" frameBorder="0" style="display: none;">

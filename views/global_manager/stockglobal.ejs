@@ -27,6 +27,7 @@
 <button class="agregar" id="nuevoVSG">Agregar vehículo</button>
 <br><br>
     <% if (stockGlobal) { %>
+    <div class="todosLosItems">
     <% stockGlobal.forEach(function(vehiculo){ %>
         <div class="lista"  border=0>
             <table class="fit"> <tr><td>
@@ -40,6 +41,7 @@
             </td></tr></table>
         </div>
     <% }) %>
+    </div>
     <% } %>
 </table>
 

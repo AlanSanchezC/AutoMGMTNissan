@@ -1,3 +1,65 @@
-<p style="margin:80px;">&nbsp;</p>
+<link href="https://fonts.googleapis.com/css?family=Raleway:300" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+<script type="text/javascript" src="/canvasjs/Chart.js"></script>
+<body>
+<center>
+<p style="margin:60px;">&nbsp;</p>
 <h3 class="subtitulo"> REPORTE DE VENTAS </h3>
 
+<% if (grafica) { %>
+	
+		<% var nombre = []; %>
+		<% var cantidad = []; %>
+
+<%	grafica.forEach(function(venta){ %>
+		<% nombre.push(venta.name) %>
+		<% cantidad.push(venta.cantidad) %>
+<% }) %>
+<% }%>
+
+<input type="hidden" id="nombres" value="<%= nombre %>">
+<input type="hidden" id="cantidades" value="<%= cantidad %>">
+
+
+<canvas id="pie-chart" width="800" height="350"></canvas>
+</body>
+<script>
+window.onload = function(){
+	var etiquetas = document.getElementById('nombres').value;
+	var datos = document.getElementById('cantidades').value;
+
+	var arr1 = etiquetas.split(",")
+	var arr2 = datos.split(",");
+	var colors = ["#FF9966", "#66CCFF", "#5DD55D", "#FF704D", "#BFFF80"]
+	var bgcolors = []
+	var n = 0
+
+	while(n < arr1.length) {
+		bgcolors.push('#'+Math.random().toString(16).substr(-6))
+		n++
+	}
+
+	var myPieChart = new Chart(document.getElementById("pie-chart"), {
+	    type: 'pie',
+	    data: {
+	    	labels: arr1,
+	    	datasets: [{
+	    		backgroundColor: bgcolors,
+	    		data: arr2
+	    	}]
+
+	    }
+	    
+	});
+}
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+</script>

@@ -9,32 +9,27 @@
 <br><br>
 
 <% if (data) { %>
+    <table>
+    <% data.forEach(function(pago){ %>
+        <tr><td> <%= pago.name %></td></tr>
 
-<% var listadoNuevo = true; %>
-<% var n = data[0].id_order; %>
-
-    <% data.forEach(function(orden){ %>
-            <h3> <%= orden.name %></h3><br>
-            Estado de orden: <%= orden.payment_status %><br>
-            Fecha de emisión: <%= orden.date_at %><br>
-            Total a pagar: <%= orden.amount %> <br>
-            Restante total: <%= orden.rest_amount %><br><br>
-            <%= orden.deposit_amount %> <br>
-
-            
-                <% n = orden.id_order; %>
-                <% if (orden.rest_amount === 0){ %>
-                        <h4> ¡Pagado! </h4>
-                <% } else { %>
-                    <button  style="float: right" class="<%= orden.id_order %>/2" value="Agregar pago" onclick="cambio(this)"> Agregar pago</button>
-                <% } %> 
-     
+        <tr> 
+            <td> Estado de orden: <%= pago.payment_status %></td>
+            <td> Fecha de emisión: <%= pago.date_at %></td>
+        </tr>
+        <tr>
+            <td> Total a pagar: <%= pago.amount %> </td>
+            <td> Restante total: <%= pago.rest_amount %></td>
+            <td> <%= pago.deposit_amount %> </td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
     <% }) %>
-
+    </table>
+    
 <form action="" method="get" id="formPago">
 </form>
     
-<% } else { %>
+<% } else {%>
     <h4> Sin órdenes </h4>
 <% }%>
 

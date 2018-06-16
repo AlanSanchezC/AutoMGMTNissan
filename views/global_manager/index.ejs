@@ -3,13 +3,17 @@
 
 <% if (globalmanfullname) { %>
 <p align="right"> 
-    <label class="bienvenida">Hola, <%= globalmanfullname %></label><br>
-    <a href="/"><input type="button" class="logout" value="Cerrar sesión" /></a>
-    </p>
+    <table >
+        <tr><td><label class="bienvenida">Hola, <%= globalmanfullname %></label></td>
+            <td><a href="/"><input type="button" class="logout" value="Salir" /></a></td>
+        </tr>
+    </table>
+</p>
 <% } %>
+</div>
 <br>
 <center>
-
+<p style="margin:80px;">&nbsp;</p>
 <div id="nuevaSucursal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -27,7 +31,7 @@
 </div>
 
 
-<h3> Sucursales </h3>
+<h3 class="subtitulo"> SUCURSALES </h3>
 <button class="agregar" id="nuevaSuc"> Agregar sucursal</button>
 <button class="agregar" id="nuevoGer"> Agregar gerente </button>
 <br><br>
@@ -35,7 +39,7 @@
 <br><br>
 <%- include stockglobal.ejs %>
 <br><br>
-<h3> Stock de sucursal </h3>
+<h3 class="subtitulo"> VEHICULOS DE SUCURSAL </h3>
 
 <% if (data) { %>
 
@@ -49,7 +53,7 @@ Ver stock de
 </select>
 <% } %>
 <br><br>
-<iframe id="frameStockSucursal" width="900px;" height="500px;" frameBorder="0" style="display: none;">
+<iframe id="frameStockSucursal" width="900px;" onload="resizeIframe(this)" frameBorder="0" style="display: none;">
     
 </iframe>
 
@@ -58,8 +62,12 @@ Ver stock de
 
 <script>
 window.onload = function() {
-    document.body.style.background = "url('img/nissandesert.jpg') no-repeat center center fixed";
+    //document.body.style.background = "url('img/nissandesert.jpg') no-repeat center center fixed";
 }
+
+function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+ }
 
 function cerrarDialogo(dialogo){
     editarSucursal.style.display = "none";

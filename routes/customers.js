@@ -281,7 +281,7 @@ router.put('/edit/(:id_customer)', function(req, res, next) {
                         id_seller: req.body.id_seller   
                     })
                 } else {
-                    req.flash('success', 'Data updated successfully!')
+                    req.flash('success', 'Datos del cliente actualizados!')
                     // render to views/customer/add.ejs
                     res.render('customer/edit', {
                         title: 'Edit customer',

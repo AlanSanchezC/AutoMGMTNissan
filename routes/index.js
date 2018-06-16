@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router();
 var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
-const TITLE = "AutoMGMT Nissan®"
+const TITLE = "AutoMGMT Nissan"
 
 //al iniciar la app se muestra el login
 router.get('/', function(req, res) {
@@ -35,7 +35,8 @@ router.post('/session', function(req, res, next){
             							"sellers.id_seller as idseller, sellers.name as sellername, sellers.lastname as sellerlastname, sellers.id_user as usr, sellers.id_office_manager, sellers.country \n" + 
                                     "FROM sellers \n" + 
             						"INNER JOIN customers ON sellers.id_seller = customers.id_seller \n" +
-            						"WHERE sellers.id_user = ? ;", u, function(err, rows, fields) {
+            						"WHERE sellers.id_user = ? " +
+                                    "ORDER BY customers.name ASC;", u, function(err, rows, fields) {
                             //Query para todas las oficinas del área
                             conn.query("SELECT id_office, name_office, city, state FROM offices " + 
                                         "WHERE country = ? ", rows[0].country, function(err2, rows2, fields2) {
@@ -109,6 +110,7 @@ router.post('/session', function(req, res, next){
                                             stock: '',
                                             officemanfullname: rows[0].name + " " + rows[0].lastname,
                                             id_office_manager: rows[0].id_office_manager,
+                                            id_office: rows[0].id_office
                                         })
                                     } else {
                                         res.render('office_manager/index', {
@@ -116,6 +118,7 @@ router.post('/session', function(req, res, next){
                                             stock: rows2,
                                             officemanfullname: rows[0].name + " " + rows[0].lastname,
                                             id_office_manager: rows[0].id_office_manager,
+                                            id_office: rows[0].id_office
                                         })
                                     }
                                 })

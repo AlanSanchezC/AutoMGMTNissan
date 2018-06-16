@@ -27,29 +27,24 @@ including header content which is common for all pages
     <span class="close" onclick="cerrarDialogo()">&times;</span>
     <iframe src="" id="frameEditarGerente" width="450px;" height="500px;"></iframe>
   </div>
-</div>
-
-<table width='50%' class="lista" border=0>
- 
+</div> 
     <% if (data) { %>
-    <% data.forEach(function(office){ %>
-        <tr>
-            <td colspan="2">
-                <label class="nombrePrincipal"><%= office.name_office %></label>
-                <button class="editOffice" onclick="alerta(this)" id="editOffice<%= office.id_office %>" value="<%= office.id_office %>" > Ver detalles</button><br>
-            </td>
-        </tr>
-        <tr><td style="line-height: 25px; font-size: 14px;">
-                Dirección: <%= office.Oaddress %><br>
-                Télefono oficina: <%= office.Ophone %><br>
-                Gerente: <%= office.name + " " + office.lastname %>
-                <button class="editManager" onclick="alerta(this)" id="editMan<%= office.id_office_manager %>" value="<%= office.id_office_manager %>" > </button>
-        </td></tr>
-        <tr><td>&nbsp;</td></tr>
-    <% }) %>
+    
+        <% data.forEach(function(office){ %>
+        <div class="lista"  border=0>
+            <table class="fit"> <tr><td>
+                    <label class="nombrePrincipal"><%= office.name_office %></label>
+                    <button class="editOffice" onclick="alerta(this)" id="editOffice<%= office.id_office %>" value="<%= office.id_office %>" > Detalles</button><br>
+            
+                    Dirección: <%= office.Oaddress %><br>
+                    Télefono oficina: <%= office.Ophone %><br>
+                    Gerente: 
+                    <button class="editManager" onclick="alerta(this)" id="editMan<%= office.id_office_manager %>" value="<%= office.id_office_manager %>" > <%= office.name + " " + office.lastname %> </button><br>
+            </td></tr></table>
+        </div>
+        <% }) %>
     <% } %>
  
-</table>
  <script>
 // Get the modal
 var nuevaSucursal = document.getElementById('nuevaSucursal');

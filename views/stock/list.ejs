@@ -25,18 +25,16 @@
 </div>
 <center>
     <% if (data) { %>
-    <table width='80%' border=0 class="listaSucursales">
             <% data.forEach(function(stock){ %>
-                <tr>
-                    <td width="60%"><label class="nombrePrincipal"> <%= stock.model %> </label> </td>
-                    <td><label class="cantidadVehiculos"> Disponibles: <%= stock.cant %></label></td>
-                </tr>
-                <tr> <td>  Descripción: <%= stock.details%> </td> 
-                <tr> <td> <label class="costo"> Costo: <%= stock.cost %> </label> </td></tr>
-                <tr><td>&nbsp;</td></tr>
+                <div class="lista" border=0>
+                <table class="fit"> <tr><td>
+                    <label class="nombrePrincipal"> <%= stock.model %> </label><br>
+                        Descripción: <%= stock.details%> <br>
+                        <label class="costo"> Costo: $ <%= stock.cost %> </label> <br>
+                        <label class="cantidadVehiculos"> Disponibles: <%= stock.cant %></label>
+                    </td></tr></table>
+                </div>
             <% }) %>
-            </tr>
-        </table>
         <br><br>
                 <% if (cmd == 'g') { %>
                     Agregar lote de 

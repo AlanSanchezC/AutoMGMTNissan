@@ -1,24 +1,26 @@
 <!-- Esta es la pag principal de los vendedores, donde se verá todo lo que puedan hacer -->
 
 <%- include ../layouts/header.ejs %>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 <% if (sellerfullname) { %>
 <p align="right"> 
-    <label class="bienvenida">Hola, <%= sellerfullname %><br>
-    <i><%= nombre_sucursal %></i></label><br><br>
-    <a href="/"><input class="logout" type="button" value="Cerrar sesión" /></a>
-    </p>
+	<table>
+        <tr><td rowspan="2"><label style="line-height: 15px;">Hola, <%= sellerfullname %><br>
+        	 <i><%= nombre_sucursal %></i></td>
+            <td><a href="/"><input type="button" class="logout" value="Salir" /></a></td>
+        </tr>
+    </table>
+</p>
+</div>
 <% } %>
+
 <center>
-
+<a style="line-height: 160px;">&nbsp;</a>
 <%- include ../customer/list.ejs %>
-
+<br><br><br>
+<h3 class="subtitulo"> VEHÍCULOS DE SUCURSAL </h3>
 <br><br>
-<h3> Catálogo de vehículos </h3>
-
 <iframe src="" width="1000px;" id="stockSucursalActual" onload="resizeIframe(this)"></iframe>
 <br><br>
 
@@ -56,7 +58,6 @@ function stockDeSucursal(sucursal){
 }
 
 window.onload = function(){
-	document.body.style.background = "url('/img/nissancool.jpg') center center fixed";
 	document.getElementById('stockSucursalActual').src = "/stocks/" + document.getElementById('oficina').className + "/o";  
 }
 

@@ -29,7 +29,7 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
   </div>
 </div>
 
-<h3> Catálogo de clientes </h3>
+<h3 class="subtitulo"> CATÁLOGO DE CLIENTES </h3>
 <button class="agregar" id="nuevo"> Agregar cliente</button>
 <br><br>
 <% if (messages.error) { %>
@@ -43,21 +43,19 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
 
 
 <% if (data) { %>
-<table width='50%' class="lista" border=0>
     <% data.forEach(function(customer){ %>
-        <tr>
-            
+        <div class="lista"  border=0>
+            <table class="fit"> <tr><td>
+                <button class="verCliente" onclick="alerta(this)" id="editar<%= customer.id_customer %>" value="<%= customer.id_customer %>" > <%= customer.name + " " + customer.lastname%> </button><br>
 
-            <td width="100%"><label class="nombrePrincipal"><%= customer.name + " " + customer.lastname%> </label>
-                 <button class="edit" onclick="alerta(this)" id="editar<%= customer.id_customer %>" value="<%= customer.id_customer %>" ></button>
-                 <button style="float:right" class="order" onclick="alerta(this)" id="<%= customer.id_customer %>" value="<%= customer.id_customer %>" > Ver pedidos</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Contacto: <%= customer.phone %> <br>
-                Dirección: <%= customer.address %></td>
-        </tr>
-        <tr><td>&nbsp;</td></tr>
+                 
+           
+            Contacto: <%= customer.phone %>
+            <button class="edit" style="float:right; background-color: white;" onclick="alerta(this)" id="<%= customer.id_customer %>" value="<%= customer.id_customer %>" > Ver pedidos</button><br>
+            Dirección: <%= customer.address %><br>
+
+        </td></tr></table>
+        </div>
     <% }) %>
     <% } else { %>
         <h4> No hay clientes </h4>
@@ -82,11 +80,11 @@ agregar.onclick = function() {
 }
 
 function alerta(cliente) {
-    if (cliente.className === 'edit'){
+    if (cliente.className === 'verCliente'){
         var iframe = document.getElementById('frameEditar')
         iframe.src = "/customers/edit/" + cliente.value;
         editarCliente.style.display = "block"
-    } else if (cliente.className === 'order'){
+    } else if (cliente.className === 'edit'){
         var iframe = document.getElementById('framePedidos')
         iframe.src = "/orders/" + cliente.value + "/" + document.getElementById('oficina').className + "/" + document.getElementById('idseller').value;
         verPedidos.style.display = "block"

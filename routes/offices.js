@@ -125,6 +125,7 @@ router.get('/edit/(:id_office)', function(req, res, next){
                 res.redirect('/office')
             }
             else { // if found
+            console.log(rows)
                 res.render("office/edit", {
                     title: 'Edit Office', 
                     id_office: rows[0].id_office,
@@ -175,6 +176,7 @@ router.put('/edit/(:id_office)', function(req, res, next) {
                     
                     res.render('office/edit', {
                         title: 'Edit office',
+                        id_office: req.params.id_office,
                         name_office: req.body.name_office,
                         phone: req.body.phone,
                         address: req.body.address,
@@ -185,7 +187,7 @@ router.put('/edit/(:id_office)', function(req, res, next) {
                         id_office_manager: req.body.id_office_manager
                     })
                 } else {
-                    req.flash('success', 'Data updated successfully!')
+                    req.flash('success', '¡Datos actualizados!')
                     
                     res.render('office/edit', {
                         title: 'Edit Office',
@@ -219,7 +221,8 @@ router.put('/edit/(:id_office)', function(req, res, next) {
             state: req.body.state,
             postal_code: req.body.postal_code,
             country: req.body.country,
-            id_office_manager: req.body.id_office_manager
+            id_office_manager: req.body.id_office_manager,
+            id_office: req.params.id_office
         })
     }
 })

@@ -21,31 +21,24 @@
     <iframe src="" id="eVSG" width="400px;" height="270px;"></iframe>
   </div>
 </div>
-
-<h3> Stock global </h3>
-
-<button id="nuevoVSG">Agregar vehículo</button>
 <br><br>
-<table width='80%' border=0>
-    <tr style='text-align:left; background-color:#CCC'>
-        <th>Vehículo</th>
-        <th>Detalles</th>
-        <th>Costo</th>
-        <th>Cantidad total</th>
-    </tr>
+<h3 class="subtitulo"> STOCK GLOBAL </h3>
 
+<button class="agregar" id="nuevoVSG">Agregar vehículo</button>
+<br><br>
     <% if (stockGlobal) { %>
     <% stockGlobal.forEach(function(vehiculo){ %>
-        <tr>
-            <td><%= vehiculo.model %></td>
-            <td><%= vehiculo.details%></td>
-            <td><%= vehiculo.cost %></td>
-            <td><%= vehiculo.cantidadTotal %></td>
-            <td>
-                <button class="edit" onclick="editarVehiculo(this)" id="<%= vehiculo.id_vehicle_model %>" value="<%= vehiculo.id_vehicle_model %>"> Editar
+        <div class="lista"  border=0>
+            <table class="fit"> <tr><td>
+                <label class="nombreStockGlobal"> <%= vehiculo.model %> </label>
+                <button style="background-color: white;" class="edit" onclick="editarVehiculo(this)" id="<%= vehiculo.id_vehicle_model %>" value="<%= vehiculo.id_vehicle_model %>"> Editar
                 </button>
-            </td>
-        </tr>
+                <br>
+                Descripción: <%= vehiculo.details%> <br>
+                Costo: $ <%= vehiculo.cost %>
+                <label class="cantidadTotal"> Cantidad: <%= vehiculo.cantidadTotal %> </label>
+            </td></tr></table>
+        </div>
     <% }) %>
     <% } %>
 </table>

@@ -92,6 +92,7 @@ router.post('/session', function(req, res, next){
                                         title: TITLE, 
                                         stock: '',
                                         officemanfullname: '',
+                                        id_office: '',
                                         id_office_manager: ''
                                     })
                             } else {
@@ -135,6 +136,8 @@ router.post('/session', function(req, res, next){
                                         "INNER JOIN offices_managers ON offices.id_office_manager = offices_managers.id_office_manager " +
                                         "WHERE offices.id_global_manager = ? " +
                                         "ORDER BY offices.state DESC;", rows[0].id_global_manager, function(err, rows2, fields) {
+
+                                
                                 conn.query("SELECT vehicles.id_vehicle, vehicles.cantidadTotal, vehicles_models.model, vehicles_models.cost, vehicles_models.details, vehicles_models.id_vehicle_model " +
                                             "from vehicles "+
                                             "INNER JOIN vehicles_models ON vehicles_models.id_vehicle_model = vehicles.id_vehicle_model " +
@@ -143,10 +146,13 @@ router.post('/session', function(req, res, next){
                                     if(rows.length === 0){
                                         res.render('',{
                                             title: TITLE,
+                                            stockGlobal: rows3,
                                             globalmanfullname: rows[0].name + " " + rows[0].lastname,
                                             id_global_manager: rows[0].id_global_manager
                                         })
                                     } else {
+                                        console.log("aqui")
+                                        console.log(rows3)
                                         res.render('global_manager/index', {
                                             title: TITLE,
                                             data: rows2,

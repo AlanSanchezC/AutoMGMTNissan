@@ -16,8 +16,7 @@ router.get('/graph/(:id_office)', function(req, res, next){
                     "WHERE offices.id_office = ? " +
                     "GROUP BY vehicles.id_vehicle " +
                     ";", req.params.id_office ,function(err, rows, fields){
-            console.log(rows)
-            res.render('report/localSalesRep',{
+            res.render('report/salesRep',{
                 grafica: rows
             })
         })
@@ -133,7 +132,7 @@ router.post('/add/(:id_global_manager)', function(req, res, next){
                         password: usuario.password
                     })
                 } else {                
-                    req.flash('success', 'Data added successfully!')
+                    req.flash('success', '¡Gerente agregado exitosamente!')
                     res.render('office_manager/add', {
                         title: 'Add New Seller',
                         name: '',

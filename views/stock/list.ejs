@@ -36,20 +36,20 @@
                 </div>
             <% }) %>
         <br><br>
-                <% if (cmd == 'g') { %>
-                    Agregar lote de 
-                    <select id="agregarAutoSucursal" onchange="agregarLoteASucursal(this)">
-                        <% if (stockGlobal) { %>
-                            <% stockGlobal.forEach(function(auto){ %>
-                                <option value="<%= auto.id_vehicle%>/<%= auto.cantidadTotal %>/<%= data[0].id_office %>" id="<%= auto.id_vehicle %>"><%= auto.model %> </option>
-                            <% }) %>
-                        <% } %> 
-                    </select>
-                <% } %>
-        
     <% } else { %>
         <h4> Sin vehículos disponibles </h4>
     <% } %> 
+    <% if (cmd == 'g') { %>
+        Agregar lote de 
+        <select id="agregarAutoSucursal" onchange="agregarLoteASucursal(this)">
+            <% if (stockGlobal) { %>
+                <% stockGlobal.forEach(function(auto){ %>
+                    <option value="<%= auto.id_vehicle%>/<%= auto.cantidadTotal %>/<%= id_office %>" id="<%= auto.id_vehicle %>"><%= auto.model %> </option>
+                <% }) %>
+            <% } %> 
+        </select>
+    <% } %>
+        
 <script>
 // Get the modal
 var editarVehicStock = document.getElementById('editarVehiculoStock');

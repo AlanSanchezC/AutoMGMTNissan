@@ -30,6 +30,7 @@ router.get('/(:id_office)/(:cmd)', function(req, res, next) {
                     res.render('stock/list', {
                         title: 'Customer List', 
                         data: '',
+                        id_office: req.params.id_office,
                         stockGlobal: rows2,
                         cmd: req.params.cmd
                     })
@@ -37,6 +38,7 @@ router.get('/(:id_office)/(:cmd)', function(req, res, next) {
                     res.render('stock/list', {
                         title: 'Customer List', 
                         data: rows,
+                        id_office: req.params.id_office,
                         stockGlobal: rows2,
                         id_stock: rows[0].id_stock,
                         id_vehicle_model: rows[0].id_vehicle_model,

@@ -5,6 +5,23 @@ var router = express.Router();
 var path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
+router.get('/graph', function(req, res, next){
+    req.getConnection(function(error, conn) {
+        conn.query("SELECT count(*) as cantidad, vehicles.name " +
+                    "FROM offices " +
+                    "INNER JOIN offices_managers on offices.id_office_manager = offices_managers.id_office_manager " +
+                    "INNER JOIN sellers on offices_managers.id_office_manager = sellers.id_office_manager " +
+                    "INNER JOIN orders_details on sellers.id_seller = orders_details.id_seller " +
+                    "INNER join vehicles on vehicles.id_vehicle = orders_details.id_vehicle " +
+                    "GROUP BY vehicles.id_vehicle " +
+                    ";", function(err, rows, fields){
+            res.render('report/salesRep',{
+                grafica: rows
+            })
+        })
+    })
+})
+
 // SHOW LIST 
 router.get('/', function(req, res, next) {
     req.getConnection(function(error, conn) {

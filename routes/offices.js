@@ -35,7 +35,7 @@ router.get('/(:id_manager)', function(req, res, next) {
 router.get('/add/(:id_global_manager)/(:state)', function(req, res, next){
     req.getConnection(function(error, conn) {
         conn.query("SELECT id_office_manager, name, lastname, city, state FROM offices_managers " +
-                        "WHERE job = 'S/A' AND state = ?", req.params.state ,function(err, rows, fields) {
+                        "WHERE job = 'S/A'",function(err, rows, fields) {
             if (rows.length === 0){
                 rows = ''
             }

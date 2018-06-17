@@ -14,7 +14,7 @@
 </div>
 <br>
 <center>
-<p style="margin:80px;">&nbsp;</p>
+<p style="margin:0px;">&nbsp;</p>
 <div id="nuevaSucursal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -31,6 +31,10 @@
   </div>
 </div>
 
+<!-- Reporte de ventas-->
+<iframe src="" height="700px;" width="1000px;" id="graph"></iframe>
+
+<br><br>
 
 <h3 class="subtitulo"> SUCURSALES </h3>
 <button class="agregar" id="nuevaSuc"> Agregar sucursal</button>
@@ -55,20 +59,18 @@ Ver stock de
 <% } %>
 <br><br>
 <iframe id="frameStockSucursal" width="900px;" onload="resizeIframe(this)" frameBorder="0" style="display: none;">
-    
 </iframe>
 
 <br><br>
 
-
 <script>
 window.onload = function() {
-    //document.body.style.background = "url('img/nissandesert.jpg') no-repeat center center fixed";
+    document.getElementById('graph').src = "/globals_managers/graph";  
 }
 
 function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
- }
+}
 
 function cerrarDialogo(dialogo){
     editarSucursal.style.display = "none";

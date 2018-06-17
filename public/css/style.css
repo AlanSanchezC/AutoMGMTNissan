@@ -20,6 +20,8 @@ td {
 select {
     cursor: pointer;
     font-size: 16px;
+    font-family: 'Raleway', sans-serif;
+    background-color: #ebf5f9;
 }
 
 
@@ -28,9 +30,10 @@ iframe {
 }
 
 .seleccion{
-    font-family: 'Raleway', sans-serif;
-    background-color: blue;
+    
 }
+
+
 
 .header{
     position: fixed;
@@ -206,6 +209,7 @@ input[type="submit"]{
 
 .cantidadTotal {
     font-weight: bold;
+    float: right;
 }
 
 .subtitulo{
@@ -237,7 +241,8 @@ input[type="submit"]{
 
 /* Modal Content */
 .modal-content {
-    background-color:#f2f2f2;
+
+    background-color:white;
     margin: auto;
     padding: 20px;
     width: 40%;

@@ -1,11 +1,31 @@
 <!--
 Este archivo carga la lista de todos los clientes de dicho vendedor
 -->
-
-<link rel="stylesheet" type="text/css" href="/css/style.css" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link href="https://fonts.googleapis.com/css?family=Raleway:300" rel="stylesheet">
 
+<div id="agregarVendNuevo" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogos()">&times;</span>
+    <iframe src="/sellers/add/<%= id_office_manager %>" width="400px;" height="370px;"></iframe>
+  </div>
+</div>
+
+<div id="editarVendedorExistente" class="modal" >
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="cerrarDialogos()">&times;</span>
+    <iframe src="" width="400px;" height="300px;" id="frameEditar"></iframe>
+  </div>
+</div>
+
+<center>
+<h3 class="subtitulo"> VENDEDORES </h3>
+<button class="agregar" id="nuevoVen"> Agregar vendedor</button>
+<br><br>
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
 <% } %>
@@ -14,78 +34,48 @@ Este archivo carga la lista de todos los clientes de dicho vendedor
     <p style="color:green"><%- messages.success %></p>
 <% } %> 
 
-<h3> Lista de vendedores </h3>
+<% if (data) { %>
+    <% data.forEach(function(seller){ %>
+        <div class="lista"  border=0>
+            <table class="fit"> <tr><td>
+                <button class="verCliente" onclick="alerta(this)" id="editar<%= seller.id_seller %>" value="<%= seller.id_seller %>" > <%= seller.name + " " + seller.lastname%> </button><br>
+            Contacto: <%= seller.phone %><br>
+            Dirección: <%= seller.address %><br>
 
-<button id="myBtn"> Agregar nuevo vendedor </button>
-
-<form method="post" action="">
-    <input type="text" name="n" placeholder="Nombre del cliente" />
-    <input type="button" name="buscar" value="Buscar" />
-</form>
-
-<div id="myModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <iframe src="/customers/add/<%= id____ %>" width="500px;" height="500px;"></iframe>
-  </div>
-</div>
-
-<script>
+        </td></tr></table>
+        </div>
+    <% }) %>
+    <% } else { %>
+        <h4> No hay clientes </h4>
+    <% }%> 
+</table>
+</center>
+ <script>
 // Get the modal
-var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
+var editarCliente = document.getElementById('editarVendedorExistente');
+var agregarVendedor = document.getElementById('agregarVendNuevo');
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
+var agregarV = document.getElementById("nuevoVen");
+
+    // When the user clicks the button, open the agregarVSG 
+agregarV.onclick = function() {
+    agregarVendedor.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+function alerta(cliente) {
+    if (cliente.className === 'verCliente'){
+        var iframe = document.getElementById('frameEditar')
+        iframe.src = "/sellers/edit/" + cliente.value;
+        editarCliente.style.display = "block"
     }
 }
+
+function cerrarDialogos(){
+    editarCliente.style.display = "none";
+    agregarVendedor.style.display = "none";
+}
+
 </script>
-
-<table width='80%' border=0>
-    <tr style='text-align:left; background-color:#CCC'>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-        <th>Oficina</th>
-    </tr>
-    
-<% if (data) { %>
-    <% data.forEach(function(seller){ %>
-        <tr>
-            <td><%= seller.name + " " + seller.lastname%></td>
-            <td><%= seller.phone %></td>
-            <td><%= seller.address %></td>
-            <td> 
-                <div style="float:left">
-                    <a href="/sellers/edit/<%= seller.id_seller %>">Edit</a> &nbsp;
-
-                    <form method="post" action="/seller/delete/<%= seller.id_seller %>" style="float:right">
-                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
-                        <input type="hidden" name="_method" value="DELETE" />
-                    </form>
-                </div>
-            </td>
-        </tr>
-    <% }) %>
-    <% } %>
- 
-</table>
  

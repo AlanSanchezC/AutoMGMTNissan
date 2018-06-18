@@ -104,7 +104,8 @@ router.post('/session', function(req, res, next){
                                             "WHERE stocks.id_office = ? " + 
                                             "GROUP BY vehicles_models.id_vehicle_model "+
                                             "HAVING cantidadStock > 0 "+
-                                            "ORDER BY cantidadStock DESC, vehicles_models.model ;", rows[0].id_office ,function(err2, rows2, fields) {
+                                            "ORDER BY cantidadStock DESC, vehicles_models.model ;", rows[0].id_office ,function(err2, rows2, fields2) {
+            
                                     if (err2 || rows2 === 0) {
                                         res.render('office_manager/index', {
                                             title: TITLE, 

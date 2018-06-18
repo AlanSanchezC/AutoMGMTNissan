@@ -13,16 +13,21 @@
 <% if (data) { %>
     <table>
     <% data.forEach(function(pago){ %>
-        <tr><td> <%= pago.name %></td></tr>
+        <tr><td> <b> <%= pago.name %></b>
+                
+            </td>
+            <td align="right"> Fecha de emisión: <%= pago.date_at %></td>
+        </tr>
 
         <tr> 
-            <td> Estado de orden: <%= pago.payment_status %></td>
-            <td> Fecha de emisión: <%= pago.date_at %></td>
+            <td> Estado de orden: <%= pago.payment_status %>
+                
+            </td>
         </tr>
         <tr>
-            <td> Total a pagar: <%= pago.amount %> </td>
-            <td> Restante total: <%= pago.rest_amount %></td>
-            <td> <%= pago.deposit_amount %> </td>
+            <td> Total a pagar: $<%= pago.amount %> </td>
+            <td> Restante total: $<%= pago.rest_amount %></td>
+            <td> Depósito: $<%= pago.deposit_amount %> </td>
         </tr>
         <tr><td>&nbsp;</td></tr>
     <% }) %>

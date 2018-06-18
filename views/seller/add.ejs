@@ -1,3 +1,5 @@
+
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
 <link href="https://fonts.googleapis.com/css?family=Raleway:300" rel="stylesheet">
 <!--
 including header content which is common for all pages
@@ -11,51 +13,65 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>
  
-<form action="/sellers/add" method="post" name="form1">
+<form action="/sellers/add/<%= id_office_manager%>" method="post" name="form1">
     <table width="25%" border="0">
         <tr> 
-            <td>Name</td>
+            <td>Nombre</td>
             <td><input type="text" name="name" id="name" value="<%= name %>" /></td>
         </tr>
-        <tr> 
-            <td>Lastname</td>
+        <tr>
+            <td>Apellidos</td>
             <td><input type="text" name="lastname" value="<%= lastname %>" /></td>
         </tr>
         <tr> 
-            <td>Phone</td>
+            <td>Teléfono</td>
             <td><input type="text" name="phone" value="<%= phone %>" /></td>
         </tr>
         <tr> 
-            <td>Address</td>
+            <td>Dirección</td>
             <td><input type="text" name="address" value="<%= address %>" /></td>
         </tr>
         <tr> 
-            <td>City</td>
-            <td><input type="text" name="city" value="<%= city %>" /></td>
+            <td>Estado</td>
+            <td><input type="text" name="city" value="<%= city %>" /></td> 
         </tr>
-        <tr> 
-            <td>State</td>
+        <tr>
+            <td>Municipio </td>
             <td><input type="text" name="state" value="<%= state %>" /></td>
         </tr>
-
         <tr> 
-            <td>Postal code</td>
+            <td>Código postal</td>
             <td><input type="text" name="postal_code" value="<%= postal_code %>" /></td>
         </tr>
         <tr> 
-            <td>Country</td>
+            <td>País</td>
             <td><input type="text" name="country" value="<%= country %>" /></td>
         </tr>
-        <tr> 
-            <td>Manager</td>
-            <td><input type="text" name="id_office_manager" value="<%= id_office_manager %>" /></td>
+        <input type="hidden" name="id_office_manager" value="<%= id_office_manager %>" />
+        <tr></tr>
+            <td colspan="2" align="center"><h3>Datos de la sesión</h3></td>
         </tr>
         <tr> 
-            <td><input type="submit" name="Submit" value="Add" /></td>
+            <td>Email</td>
+            <td><input type="text" name="email" value="<%= email %>" /></td>
+        </tr>
+        <tr> 
+            <td>Usuario</td>
+            <td><input type="text" name="username" value="<%= username %>" /></td>
+        </tr>
+        <tr> 
+            <td>Contraseña</td>
+            <td><input type="password" name="password" value="<%= password %>" /></td>
+        </tr>
+        <tr> 
+            <td><input type="submit" name="Submit" value="Agregar" /></td>
         </tr>
     </table>
 </form>
- 
+
+<script>
+
+</script>
 <!--
 including footer content which is common for all pages
 -->

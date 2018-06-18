@@ -1,6 +1,9 @@
 <%- include ../layouts/header.ejs %>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 <script type="text/javascript" src="canvasjs/canvasjs.min.js"></script>
+
+<input type="hidden" value="<%= id_office_manager %>" id="idofficeman" />
+
 <% if (officemanfullname) { %>
 	<div id="hd" style="float: right;"> 
     <table>
@@ -12,19 +15,24 @@
 </div>
 <center>
 
+
 <br><br>
 
 <!-- Reporte de ventas -->
-<iframe src="" width="1000px;" id="graph" onload="resizeIframe(this)"></iframe>
+<iframe src="" width="1020px;" id="graph" onload="resizeIframe(this)"></iframe>
 
-<br><br>
+
+<br><br><p style="margin: 60px;"></p>
+
+<iframe src="" height="550px;" width="1000px;" id="sellerss" onload="resizeIframe(this)"></iframe>
+
+<br><br><p style="margin: 60px;"></p>
 <%- include stockList.ejs %>
 <% } else { %>
 	<center> <h3> Aún no estás asignado a una sucursal </h3>
 <% } %>
 
-<input type="hidden" value="<%= id_office %>" id="oficina">
-<input type="hidden" value="<%= stock %>" id="haystock>">
+<input type="hidden" value="<%= id_office %>" id="oficina" />
 
 <script>
 function resizeIframe(obj) {
@@ -32,7 +40,8 @@ function resizeIframe(obj) {
  }
 
 window.onload = function(){
-	document.getElementById('graph').src = "/offices_managers/graph/" + document.getElementById('oficina').value;  
+	document.getElementById('graph').src = "/offices_managers/graph/" + document.getElementById('oficina').value; 
+    document.getElementById('sellerss').src = "/sellers/" + document.getElementById('idofficeman').value;
 }
 
 </script>

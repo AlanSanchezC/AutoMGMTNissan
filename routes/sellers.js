@@ -8,21 +8,23 @@ const VIEWS = path.join(__dirname, 'views');
 
 
 // SHOW LIST OF USERS
-router.get('/', function(req, res, next) {
+router.get('/(:id_office_manager)', function(req, res, next) {
     req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM sellers ORDER BY id_seller DESC',function(err, rows, fields) {
+        conn.query('SELECT * FROM sellers WHERE id_office_manager = ?', req.params.id_office_manager,function(err, rows, fields) {
             //if(err) throw err
             if (err) {
                 req.flash('error', err)
                 res.render('seller/list', {
                     title: 'Seller List', 
-                    data: ''
+                    data: '',
+                    id_office_manager: req.params.id_office_manager
                 })
             } else {
                 // render to views/seller/list.ejs template file id
                 res.render('seller/list', {
                     title: 'Seller List', 
-                    data: rows
+                    data: rows,
+                    id_office_manager: req.params.id_office_manager
                 })
             }
         })
@@ -30,7 +32,7 @@ router.get('/', function(req, res, next) {
 })
  
 // SHOW ADD Seller FORM user
-router.get('/add', function(req, res, next){    
+router.get('/add/(:id_office_manager)', function(req, res, next){    
     // render to views/seller/add.ejs
     res.render('seller/add', {
         title: 'Add New Seller',
@@ -42,12 +44,15 @@ router.get('/add', function(req, res, next){
         state: '',
         postal_code: '',
         country: '',
-        id_office_manager: ''
+        email: '',
+        username: '',
+        password: '',
+        id_office_manager: req.params.id_office_manager
     })
 })
  
 // ADD NEW Seller POST ACTION
-router.post('/add', function(req, res, next){    
+router.post('/add/(:id_office_manager)', function(req, res, next){    
     req.assert('name', 'Name is required').notEmpty()           //Validate name
     req.assert('lastname', 'Lastname is required').notEmpty()   //Validate lastname
     req.assert('phone', 'A valid city is required').notEmpty()   //Validate
@@ -56,8 +61,10 @@ router.post('/add', function(req, res, next){
     req.assert('state', 'A valid state is required').notEmpty()   //Validate state
     req.assert('postal_code', 'A valid city is required').notEmpty()   //Validate
     req.assert('country', 'A valid city is required').notEmpty()   //Validate
-    req.assert('id_office_manager', 'A valid city is required').notEmpty()   //Validate
- 
+    req.assert('email', 'A valid email is required').notEmpty()   //Validate state
+    req.assert('username', 'A valid username is required').notEmpty()   //Validate
+    req.assert('password', 'A password is required').notEmpty()   //Validate
+    
     var errors = req.validationErrors()
     
     if( !errors ) {   //No errors were found.  Passed Validation!
@@ -72,54 +79,69 @@ router.post('/add', function(req, res, next){
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
 
-        var seller = {
-            name: req.sanitize('name').escape().trim(),
-            lastname: req.sanitize('lastname').escape().trim(),
-            phone: req.sanitize('phone').escape().trim(),
-            address: req.sanitize('address').escape().trim(),
-            city: req.sanitize('city').escape().trim(),
-            state: req.sanitize('state').escape().trim(),
-            postal_code: req.sanitize('postal_code').escape().trim(),
-            country: req.sanitize('country').escape().trim(),
-            id_office_manager: req.sanitize('id_office_manager').escape().trim(),
-        }
         
+        
+        var usuario = {
+            email: req.sanitize('email').escape().trim(),
+            username: req.sanitize('username').escape().trim(),
+            password: req.sanitize('password').escape().trim(),
+            typeUser: 's'
+        }
+
         req.getConnection(function(error, conn) {
-            conn.query('INSERT INTO sellers SET ?', seller, function(err, result) {
-                //if(err) throw err
-                if (err) {
-                    req.flash('error', err)
-                    
-                    // render to views/seller/add.ejs
-                    res.render('seller/add', {
-                        title: 'Add New Seller',
-                        name: seller.name,
-                        lastname: seller.lastname,
-                        phone: seller.phone,
-                        address: seller.address,
-                        city: seller.city,
-                        state: seller.state,
-                        postal_code: seller.postal_code,
-                        country: seller.country,
-                        id_office_manager: seller.id_office_manager
-                    })
-                } else {                
-                    req.flash('success', 'Data added successfully!')
-                    
-                    // render to views/seller/add.ejs
-                    res.render('seller/add', {
-                        title: 'Add New Seller',
-                        name: '',
-                        lastname: '',
-                        phone: '',
-                        address: '',
-                        city: '',
-                        state: '',
-                        postal_code: '',
-                        country: '',
-                        id_office_manager: ''
-                    })
-                }
+            conn.query('INSERT INTO users SET ?', usuario, function(err, result) {
+                    var seller = {
+                        name: req.sanitize('name').escape().trim(),
+                        lastname: req.sanitize('lastname').escape().trim(),
+                        phone: req.sanitize('phone').escape().trim(),
+                        address: req.sanitize('address').escape().trim(),
+                        city: req.sanitize('city').escape().trim(),
+                        state: req.sanitize('state').escape().trim(),
+                        postal_code: req.sanitize('postal_code').escape().trim(),
+                        country: req.sanitize('country').escape().trim(),
+                        id_office_manager: req.params.id_office_manager,
+                        id_user: result.insertId
+                    }
+
+
+                conn.query('INSERT INTO sellers SET ?', seller, function(err2, result) {
+                    //query2
+                    if (err2) {
+                        req.flash('error', err2)
+                        res.render('office_manager/add', {
+                            title: 'Add New Office manager',
+                            name: offices_manager.name,
+                            lastname: offices_manager.lastname,
+                            phone: offices_manager.phone,
+                            address: offices_manager.address,
+                            city: offices_manager.city,
+                            state: offices_manager.state,
+                            postal_code: offices_manager.postal_code,
+                            country: offices_manager.country,
+                            id_global_manager: offices_manager.id_global_manager,
+                            email: usuario.email,
+                            username: usuario.username,
+                            password: usuario.password
+                        })
+                    } else {                
+                        req.flash('success', '¡Vendedor agregado exitosamente!')
+                        res.render('office_manager/add', {
+                            title: 'Add New Seller',
+                            name: '',
+                            lastname: '',
+                            phone: '',
+                            address: '',
+                            city: '',
+                            state: '',
+                            postal_code: '',
+                            country: '',
+                            id_global_manager: '',
+                            email: '',
+                            username: '',
+                            password: ''
+                        })
+                    }
+                })
             })
         })
     }
@@ -168,6 +190,8 @@ router.get('/edit/(:id_seller)', function(req, res, next){
                     id_seller: rows[0].id_seller,
                     name: rows[0].name,
                     lastname: rows[0].lastname,
+                    phone: rows[0].phone,
+                    address: rows[0].address,
                     city: rows[0].city,
                     state: rows[0].state
                 })
@@ -180,8 +204,8 @@ router.get('/edit/(:id_seller)', function(req, res, next){
 router.put('/edit/(:id_seller)', function(req, res, next) {
     req.assert('name', 'Name is required').notEmpty()           //Validate name
     req.assert('lastname', 'Lastname is required').notEmpty()   //Validate lastname
-    req.assert('city', 'A valid city is required').notEmpty()   //Validate city
-    req.assert('state', 'A valid state is required').notEmpty()   //Validate state
+    req.assert('phone', 'A valid city is required').notEmpty()   //Validate city
+    req.assert('address', 'A valid state is required').notEmpty()   //Validate state
 
     var errors = req.validationErrors()
     
@@ -199,8 +223,8 @@ router.put('/edit/(:id_seller)', function(req, res, next) {
         var seller = {
             name: req.sanitize('name').escape().trim(),
             lastname: req.sanitize('lastname').escape().trim(),
-            city: req.sanitize('city').escape().trim(),
-            state: req.sanitize('state').escape().trim()
+            phone: req.sanitize('phone').escape().trim(),
+            address: req.sanitize('address').escape().trim()
         }
         
         req.getConnection(function(error, conn) {
@@ -214,11 +238,11 @@ router.put('/edit/(:id_seller)', function(req, res, next) {
                         title: 'Edit Seller',
                         name: req.body.name,
                         lastname: req.body.lastname,
-                        city: req.body.city,
-                        state: req.body.state
+                        phone: req.body.phone,
+                        address: req.body.address
                     })
                 } else {
-                    req.flash('success', 'Data updated successfully!')
+                    req.flash('success', '¡Datos actualizados!')
                     
                     // render to views/seller/add.ejs
                     res.render('seller/edit', {
@@ -226,8 +250,8 @@ router.put('/edit/(:id_seller)', function(req, res, next) {
                         id_seller: req.params.id_seller,
                         name: req.body.name,
                         lastname: req.body.lastname,
-                        city: req.body.city,
-                        state: req.body.state
+                        phone: req.body.phone,
+                        address: req.body.address
                     })
                 }
             })
